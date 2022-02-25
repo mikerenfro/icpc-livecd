@@ -52,7 +52,7 @@ chroot ${CUSTOM} add-apt-repository -y ppa:deadsnakes/ppa
 chroot ${CUSTOM} "wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/packages.microsoft.gpg"
 chroot ${CUSTOM} 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list''
 chroot ${CUSTOM} apt -y upgrade
-chroot ${CUSTOM} apt -y install build-essential emacs neovim openjdk-17-jdk-headless python2.7 python3.5
+chroot ${CUSTOM} apt -y install build-essential emacs neovim code openjdk-17-jdk-headless python2.7 python3.5
 # In custom/usr/share/initramfs-tools/scripts/casper-bottom/25adduser:
 # - Whack sudoers entry for live user
 # - Whack ubiquity.desktop file copying
