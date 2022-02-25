@@ -1,7 +1,9 @@
 #!/bin/bash
 set -e
 
-# Reference: https://askubuntu.com/a/49679
+# References:
+# - https://askubuntu.com/a/49679
+# - https://help.ubuntu.com/community/LiveCDCustomization
 
 MAJOR_RELEASE=20.04
 MINOR_RELEASE=4
@@ -12,6 +14,21 @@ CUSTOM=${WORKDIR}/custom
 SQUASHFS=${WORKDIR}/squashfs
 
 ISO_URL=https://cdimage.ubuntu.com/xubuntu/releases/${MAJOR_RELEASE}/release/xubuntu-${MAJOR_RELEASE}.${MINOR_RELEASE}-desktop-amd64.iso
+
+function mount_pseudo_if_needed {
+    if mountpoint -q $1; then
+        echo "$1 already mounted"
+    else
+        mount -t $2 none $1
+    fi
+}
+function umount_pseudo_if_needed {
+    if mountpoint -q $1; then
+        umount $1
+    else
+        echo "$1 already unmounted"
+    fi
+}
 
 # Preparations
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
@@ -31,21 +48,24 @@ else
 fi
 rsync --update -a ${SQUASHFS}/* custom
 cp /etc/{resolv.conf,hosts} ${CUSTOM}/etc/
-if mountpoint -q ${CUSTOM}/proc; then
-    echo "${CUSTOM}/proc already mounted"
-else
-    mount -t proc none ${CUSTOM}/proc
-fi
-if mountpoint -q ${CUSTOM}/sys; then
-    echo "${CUSTOM}/sys already mounted"
-else
-    mount -t sysfs none ${CUSTOM}/sys
-fi
-if mountpoint -q ${CUSTOM}/dev/pts; then
-    echo "${CUSTOM}/dev/pts already mounted"
-else
-    mount -t devpts none ${CUSTOM}/dev/pts
-fi
+mount_pseudo_if_needed ${CUSTOM}/proc proc
+mount_pseudo_if_needed ${CUSTOM}/sys sys
+mount_pseudo_if_needed ${CUSTOM}/dev/pts devpts
+# if mountpoint -q ${CUSTOM}/proc; then
+#     echo "${CUSTOM}/proc already mounted"
+# else
+#     mount -t proc none ${CUSTOM}/proc
+# fi
+# if mountpoint -q ${CUSTOM}/sys; then
+#     echo "${CUSTOM}/sys already mounted"
+# else
+#     mount -t sysfs none ${CUSTOM}/sys
+# fi
+# if mountpoint -q ${CUSTOM}/dev/pts; then
+#     echo "${CUSTOM}/dev/pts already mounted"
+# else
+#     mount -t devpts none ${CUSTOM}/dev/pts
+# fi
 
 # Customizing
 chroot ${CUSTOM} add-apt-repository -y ppa:deadsnakes/ppa
@@ -61,21 +81,24 @@ chroot ${CUSTOM} apt -y install build-essential emacs neovim code openjdk-17-jdk
 
 # Cleaning up
 chroot ${CUSTOM} apt -y clean
-if mountpoint -q ${CUSTOM}/proc; then
-    umount ${CUSTOM}/proc
-else
-    echo "${CUSTOM}/proc already unmounted"
-fi
-if mountpoint -q ${CUSTOM}/sys; then
-    umount ${CUSTOM}/sys
-else
-    echo "${CUSTOM}/sys already unmounted"
-fi
-if mountpoint -q ${CUSTOM}/dev/pts; then
-    umount ${CUSTOM}/dev/pts
-else
-    echo "${CUSTOM}/dev/pts already un mounted"
-fi
+umount_pseudo_if_needed ${CUSTOM}/proc
+umount_pseudo_if_needed ${CUSTOM}/sys
+umount_pseudo_if_needed ${CUSTOM}/dev/pts
+# if mountpoint -q ${CUSTOM}/proc; then
+#     umount ${CUSTOM}/proc
+# else
+#     echo "${CUSTOM}/proc already unmounted"
+# fi
+# if mountpoint -q ${CUSTOM}/sys; then
+#     umount ${CUSTOM}/sys
+# else
+#     echo "${CUSTOM}/sys already unmounted"
+# fi
+# if mountpoint -q ${CUSTOM}/dev/pts; then
+#     umount ${CUSTOM}/dev/pts
+# else
+#     echo "${CUSTOM}/dev/pts already un mounted"
+# fi
 
 rm -rf ${CUSTOM}/tmp/*
 rm -rf ${CUSTOM}/etc/{resolv.conf,hosts}
