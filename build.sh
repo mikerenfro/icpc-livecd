@@ -18,13 +18,29 @@ mkdir -p ${WORKDIR} && pushd ${WORKDIR}
 mkdir -p ${ORIG_CD} ${NEW_CD} ${CUSTOM} ${SQUASHFS}
 wget --mirror --no-directories ${ISO_URL}
 ISO_NAME=$(basename ${ISO_URL})
-mount -o loop ${ISO_NAME} ${ORIG_CD}
+if mountpoint -q ${ORIG_CD}; then
+    echo "${ORIG_CD} already mounted"
+else
+    mount -o loop ${ISO_NAME} ${ORIG_CD}
+fi
 rsync --exclude=/casper/filesystem.squashfs -a ${ORIG_CD}/ ${NEW_CD}
-mount -t squashfs -o loop ${ORIG_CD}/casper/filesystem.squashfs ${SQUASHFS}
+if mountpoint -q ${SQUASHFS}; then
+    echo "${SQUASHFS} already mounted"
+else
+    mount -t squashfs -o loop ${ORIG_CD}/casper/filesystem.squashfs ${SQUASHFS}
+fi
 cp -a ${SQUASHFS}/* custom
 cp /etc/{resolv.conf,hosts} ${CUSTOM}/etc/
-mount -t proc none ${CUSTOM}/proc
-mount -t sysfs none ${CUSTOM}/sys
+if mountpoint -q ${CUSTOM}/proc; then
+    echo "${CUSTOM}/proc already mounted"
+else
+    mount -t proc none ${CUSTOM}/proc
+fi
+if mountpoint -q ${CUSTOM}/sys; then
+    echo "${CUSTOM}/sys already mounted"
+else
+    mount -t sysfs none ${CUSTOM}/sys
+fi
 
 # Customizing
 chroot ${CUSTOM} add-apt-repository -y ppa:deadsnakes/ppa
@@ -33,8 +49,16 @@ chroot ${CUSTOM} apt -y install build-essential emacs vim openjdk-17-jdk-headles
 
 # Cleaning up
 chroot ${CUSTOM} apt -y clean
-umount ${CUSTOM}/proc
-umount ${CUSTOM}/sys
+if mountpoint -q ${CUSTOM}/proc; then
+    umount ${CUSTOM}/proc
+else
+    echo "${CUSTOM}/proc already unmounted"
+fi
+if mountpoint -q ${CUSTOM}/sys; then
+    umount ${CUSTOM}/sys
+else
+    echo "${CUSTOM}/sys already unmounted"
+fi
 rm -rf ${CUSTOM}/tmp/*
 rm -rf ${CUSTOM}/etc/{resolv.conf,hosts}
 
@@ -52,6 +76,14 @@ MKISOFS_OPTIONS="-b isolinux/isolinux.bin -c isolinux/boot.cat -cache-inodes -J 
 mkisofs -r -V "ICPC Live" ${MKISOFS_OPTIONS} -o ${WORKDIR}/icpc-live.iso .
 
 # Unmount and Clean
-umount ${WORKDIR}/squashfs/
-umount ${WORKDIR}/original-cd/
+if mountpoint -q ${SQUASHFS}/; then
+    umount ${SQUASHFS}
+else
+    echo "${SQUASHFS} already unmounted"
+fi
+if mountpoint -q ${ORIG_CD}; then
+    umount ${ORIG_CD}
+else
+    echo "${ORIG_CD} already unmounted"
+fi
 popd
