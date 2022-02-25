@@ -12,6 +12,9 @@ ORIG_CD=${WORKDIR}/original-cd
 NEW_CD=${WORKDIR}/cd
 CUSTOM=${WORKDIR}/custom
 SQUASHFS=${WORKDIR}/squashfs
+PACKAGES="build-essential emacs neovim code openjdk-17-jdk-headless python2.7 python3.5"
+
+# Hopefully nothing to change below this line
 
 ISO_URL=https://cdimage.ubuntu.com/xubuntu/releases/${MAJOR_RELEASE}/release/xubuntu-${MAJOR_RELEASE}.${MINOR_RELEASE}-desktop-amd64.iso
 
@@ -73,7 +76,7 @@ wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > ${
 echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > ${CUSTOM}/etc/apt/sources.list.d/vscode.list
 chroot ${CUSTOM} apt -y update
 chroot ${CUSTOM} apt -y upgrade
-chroot ${CUSTOM} apt -y install build-essential emacs neovim code openjdk-17-jdk-headless python2.7 python3.5
+chroot ${CUSTOM} apt -y install ${PACKAGES}
 # In custom/usr/share/initramfs-tools/scripts/casper-bottom/25adduser:
 # - Whack sudoers entry for live user
 # - Whack ubiquity.desktop file copying
