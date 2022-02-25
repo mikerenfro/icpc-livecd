@@ -43,6 +43,8 @@ function umount_pseudo_if_needed {
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
 mkdir -p ${ORIG_CD} ${NEW_CD} ${CUSTOM} ${SQUASHFS}
 wget --mirror --no-directories ${ISO_URL}
+wget --mirror --no-directories ${ECLIPSE_CPP_URL}
+wget --mirror --no-directories ${ECLIPSE_JAVA_URL}
 ISO_NAME=$(basename ${ISO_URL})
 if mountpoint -q ${ORIG_CD}; then
     echo "${ORIG_CD} already mounted"
@@ -57,24 +59,14 @@ else
 fi
 rsync --update -a ${SQUASHFS}/* custom
 cp /etc/{resolv.conf,hosts} ${CUSTOM}/etc/
+mkdir -p ${CUSTOM}/usr/local/eclipse-cpp -p ${CUSTOM}/usr/local/eclipse-java
+tar -C ${CUSTOM}/usr/local/eclipse-cpp --strip-components=1 -zxf eclipse-cpp-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
+tar -C ${CUSTOM}/usr/local/eclipse-java --strip-components=1 -zxf eclipse-java-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
+(cd ${CUSTOM}/usr/local/eclipse-java && ln -s eclipse eclipse-java)
+(cd ${CUSTOM}/usr/local/eclipse-cpp && ln -s eclipse eclipse-cpp)
 mount_pseudo_if_needed ${CUSTOM}/proc proc
 mount_pseudo_if_needed ${CUSTOM}/sys sysfs
 mount_pseudo_if_needed ${CUSTOM}/dev/pts devpts
-# if mountpoint -q ${CUSTOM}/proc; then
-#     echo "${CUSTOM}/proc already mounted"
-# else
-#     mount -t proc none ${CUSTOM}/proc
-# fi
-# if mountpoint -q ${CUSTOM}/sys; then
-#     echo "${CUSTOM}/sys already mounted"
-# else
-#     mount -t sysfs none ${CUSTOM}/sys
-# fi
-# if mountpoint -q ${CUSTOM}/dev/pts; then
-#     echo "${CUSTOM}/dev/pts already mounted"
-# else
-#     mount -t devpts none ${CUSTOM}/dev/pts
-# fi
 
 # Customizing
 chroot ${CUSTOM} add-apt-repository -y ppa:deadsnakes/ppa
@@ -93,21 +85,6 @@ chroot ${CUSTOM} apt -y clean
 umount_pseudo_if_needed ${CUSTOM}/proc
 umount_pseudo_if_needed ${CUSTOM}/sys
 umount_pseudo_if_needed ${CUSTOM}/dev/pts
-# if mountpoint -q ${CUSTOM}/proc; then
-#     umount ${CUSTOM}/proc
-# else
-#     echo "${CUSTOM}/proc already unmounted"
-# fi
-# if mountpoint -q ${CUSTOM}/sys; then
-#     umount ${CUSTOM}/sys
-# else
-#     echo "${CUSTOM}/sys already unmounted"
-# fi
-# if mountpoint -q ${CUSTOM}/dev/pts; then
-#     umount ${CUSTOM}/dev/pts
-# else
-#     echo "${CUSTOM}/dev/pts already un mounted"
-# fi
 
 rm -rf ${CUSTOM}/tmp/*
 rm -rf ${CUSTOM}/etc/{resolv.conf,hosts}
