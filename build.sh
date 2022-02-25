@@ -68,7 +68,7 @@ rm -rf ${CUSTOM}/etc/{resolv.conf,hosts}
 chmod +w ${NEW_CD}/casper/filesystem.manifest
 sudo chroot ${CUSTOM} dpkg-query -W --showformat='${Package} ${Version}\n' > ${NEW_CD}/casper/filesystem.manifest
 sudo cp ${NEW_CD}/casper/filesystem.manifest ${NEW_CD}/casper/filesystem.manifest-desktop
-mksquashfs -noappend ${CUSTOM} ${NEW_CD}/casper/filesystem.squashfs
+mksquashfs ${CUSTOM} ${NEW_CD}/casper/filesystem.squashfs -noappend
 rm -f ${NEW_CD}/md5sum.txt
 (cd ${NEW_CD} && find . -type f -exec md5sum {} + > md5sum.txt)
 
