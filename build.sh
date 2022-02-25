@@ -50,8 +50,7 @@ fi
 # Customizing
 chroot ${CUSTOM} add-apt-repository -y ppa:deadsnakes/ppa
 chroot ${CUSTOM} apt -y upgrade
-chroot ${CUSTOM} apt -y install vim
-chroot ${CUSTOM} apt -y install build-essential emacs openjdk-17-jdk-headless python2.7 python3.5
+chroot ${CUSTOM} apt -y install build-essential emacs neovim openjdk-17-jdk-headless python2.7 python3.5
 # In custom/usr/share/initramfs-tools/scripts/casper-bottom/25adduser:
 # - Whack sudoers entry
 # - Whack ubiquity.desktop file copying
