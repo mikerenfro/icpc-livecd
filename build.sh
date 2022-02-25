@@ -21,6 +21,7 @@ mount -t sysfs none custom/sys
 
 # Customizing
 chroot custom add-apt-repository -y ppa:deadsnakes/ppa
+chroot custom apt -y upgrade
 chroot custom apt -y install build-essential emacs vim openjdk-17-jdk-headless python2.7 python3.5
 
 # Cleaning up
@@ -44,4 +45,4 @@ mkisofs -r -V "ICPC Live" -b isolinux/isolinux.bin -c isolinux/boot.cat -cache-i
 
 # Unmount and Clean
 umount ${WORKDIR}/squashfs/
-umount ${WORKDIR}/livecd/
+umount ${WORKDIR}/original-cd/
