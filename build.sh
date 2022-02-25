@@ -23,13 +23,13 @@ if mountpoint -q ${ORIG_CD}; then
 else
     mount -o loop ${ISO_NAME} ${ORIG_CD}
 fi
-rsync --exclude=/casper/filesystem.squashfs -a ${ORIG_CD}/ ${NEW_CD}
+rsync --update --exclude=/casper/filesystem.squashfs -a ${ORIG_CD}/ ${NEW_CD}
 if mountpoint -q ${SQUASHFS}; then
     echo "${SQUASHFS} already mounted"
 else
     mount -t squashfs -o loop ${ORIG_CD}/casper/filesystem.squashfs ${SQUASHFS}
 fi
-rsync -a ${SQUASHFS}/* custom
+rsync --update -a ${SQUASHFS}/* custom
 cp /etc/{resolv.conf,hosts} ${CUSTOM}/etc/
 if mountpoint -q ${CUSTOM}/proc; then
     echo "${CUSTOM}/proc already mounted"
