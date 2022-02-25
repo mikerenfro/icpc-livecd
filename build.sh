@@ -15,13 +15,13 @@ ISO_URL=https://cdimage.ubuntu.com/xubuntu/releases/${MAJOR_RELEASE}/release/xub
 
 # Preparations
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
-mkdir -p ${ORIG_CD} ${NEW_CD} ${CUSTOM} ${SQUAHSFS}
+mkdir -p ${ORIG_CD} ${NEW_CD} ${CUSTOM} ${SQUASHFS}
 wget --mirror --no-directories ${ISO_URL}
 ISO_NAME=$(basename ${ISO_URL})
 mount -o loop ${ISO_NAME} ${ORIG_CD}
 rsync --exclude=/casper/filesystem.squashfs -a ${ORIG_CD}/ ${NEW_CD}
-mount -t squashfs -o loop ${ORIG_CD}/casper/filesystem.squashfs ${SQUAHSFS}
-cp -a ${SQUAHSFS}/* custom
+mount -t squashfs -o loop ${ORIG_CD}/casper/filesystem.squashfs ${SQUASHFS}
+cp -a ${SQUASHFS}/* custom
 cp /etc/{resolv.conf,hosts} ${CUSTOM}/etc/
 mount -t proc none ${CUSTOM}/proc
 mount -t sysfs none ${CUSTOM}/sys
