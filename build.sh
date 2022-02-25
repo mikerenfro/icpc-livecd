@@ -52,6 +52,7 @@ else
     mount -o loop ${ISO_NAME} ${ORIG_CD}
 fi
 rsync --update --exclude=/casper/filesystem.squashfs -a ${ORIG_CD}/ ${NEW_CD}
+cp txt.cfg ${NEW_CD}/isolinux/
 if mountpoint -q ${SQUASHFS}; then
     echo "${SQUASHFS} already mounted"
 else
