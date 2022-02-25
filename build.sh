@@ -49,12 +49,14 @@ fi
 
 # Customizing
 chroot ${CUSTOM} add-apt-repository -y ppa:deadsnakes/ppa
+chroot ${CUSTOM} "wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/packages.microsoft.gpg"
+chroot ${CUSTOM} 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list''
 chroot ${CUSTOM} apt -y upgrade
 chroot ${CUSTOM} apt -y install build-essential emacs neovim openjdk-17-jdk-headless python2.7 python3.5
 # In custom/usr/share/initramfs-tools/scripts/casper-bottom/25adduser:
-# - Whack sudoers entry
+# - Whack sudoers entry for live user
 # - Whack ubiquity.desktop file copying
-# - Add secondary user with sudo and real password
+# - Add secondary user with sudo and real password, or give root a public key and ssh access
 
 # Cleaning up
 chroot ${CUSTOM} apt -y clean
@@ -79,8 +81,8 @@ rm -rf ${CUSTOM}/etc/{resolv.conf,hosts}
 
 # Setting up the ISO
 chmod +w ${NEW_CD}/casper/filesystem.manifest
-sudo chroot ${CUSTOM} dpkg-query -W --showformat='${Package} ${Version}\n' > ${NEW_CD}/casper/filesystem.manifest
-sudo cp ${NEW_CD}/casper/filesystem.manifest ${NEW_CD}/casper/filesystem.manifest-desktop
+chroot ${CUSTOM} dpkg-query -W --showformat='${Package} ${Version}\n' > ${NEW_CD}/casper/filesystem.manifest
+cp ${NEW_CD}/casper/filesystem.manifest ${NEW_CD}/casper/filesystem.manifest-desktop
 mksquashfs ${CUSTOM} ${NEW_CD}/casper/filesystem.squashfs -noappend
 rm -f ${NEW_CD}/md5sum.txt
 (cd ${NEW_CD} && find . -type f -exec md5sum {} + > md5sum.txt)
