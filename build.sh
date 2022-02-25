@@ -41,6 +41,11 @@ if mountpoint -q ${CUSTOM}/sys; then
 else
     mount -t sysfs none ${CUSTOM}/sys
 fi
+if mountpoint -q ${CUSTOM}/dev/pts; then
+    echo "${CUSTOM}/dev/pts already mounted"
+else
+    mount -t devpts none ${CUSTOM}/dev/pts
+fi
 
 # Customizing
 chroot ${CUSTOM} add-apt-repository -y ppa:deadsnakes/ppa
@@ -64,6 +69,12 @@ if mountpoint -q ${CUSTOM}/sys; then
 else
     echo "${CUSTOM}/sys already unmounted"
 fi
+if mountpoint -q ${CUSTOM}/dev/pts; then
+    umount ${CUSTOM}/dev/pts
+else
+    echo "${CUSTOM}/dev/pts already un mounted"
+fi
+
 rm -rf ${CUSTOM}/tmp/*
 rm -rf ${CUSTOM}/etc/{resolv.conf,hosts}
 
