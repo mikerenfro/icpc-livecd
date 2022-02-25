@@ -62,8 +62,8 @@ cp /etc/{resolv.conf,hosts} ${CUSTOM}/etc/
 mkdir -p ${CUSTOM}/usr/local/eclipse-cpp -p ${CUSTOM}/usr/local/eclipse-java
 tar -C ${CUSTOM}/usr/local/eclipse-cpp --strip-components=1 -zxf eclipse-cpp-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
 tar -C ${CUSTOM}/usr/local/eclipse-java --strip-components=1 -zxf eclipse-java-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
-(cd ${CUSTOM}/usr/local/eclipse-java && ln -s eclipse eclipse-java)
-(cd ${CUSTOM}/usr/local/eclipse-cpp && ln -s eclipse eclipse-cpp)
+(cd ${CUSTOM}/usr/local/eclipse-java && ln -sf eclipse eclipse-java)
+(cd ${CUSTOM}/usr/local/eclipse-cpp && ln -sf eclipse eclipse-cpp)
 mount_pseudo_if_needed ${CUSTOM}/proc proc
 mount_pseudo_if_needed ${CUSTOM}/sys sysfs
 mount_pseudo_if_needed ${CUSTOM}/dev/pts devpts
