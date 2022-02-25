@@ -49,7 +49,7 @@ fi
 rsync --update -a ${SQUASHFS}/* custom
 cp /etc/{resolv.conf,hosts} ${CUSTOM}/etc/
 mount_pseudo_if_needed ${CUSTOM}/proc proc
-mount_pseudo_if_needed ${CUSTOM}/sys sys
+mount_pseudo_if_needed ${CUSTOM}/sys sysfs
 mount_pseudo_if_needed ${CUSTOM}/dev/pts devpts
 # if mountpoint -q ${CUSTOM}/proc; then
 #     echo "${CUSTOM}/proc already mounted"
