@@ -29,7 +29,7 @@ if mountpoint -q ${SQUASHFS}; then
 else
     mount -t squashfs -o loop ${ORIG_CD}/casper/filesystem.squashfs ${SQUASHFS}
 fi
-cp -a ${SQUASHFS}/* custom
+rsync -a ${SQUASHFS}/* custom
 cp /etc/{resolv.conf,hosts} ${CUSTOM}/etc/
 if mountpoint -q ${CUSTOM}/proc; then
     echo "${CUSTOM}/proc already mounted"
