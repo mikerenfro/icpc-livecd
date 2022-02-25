@@ -69,6 +69,7 @@ mount_pseudo_if_needed ${CUSTOM}/sys sysfs
 mount_pseudo_if_needed ${CUSTOM}/dev/pts devpts
 
 # Customizing
+cp 25adduser custom/usr/share/initramfs-tools/scripts/casper-bottom/
 chroot ${CUSTOM} add-apt-repository -y ppa:deadsnakes/ppa
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > ${CUSTOM}/etc/apt/trusted.gpg.d/packages.microsoft.gpg
 echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > ${CUSTOM}/etc/apt/sources.list.d/vscode.list
