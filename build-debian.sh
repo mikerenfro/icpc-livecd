@@ -43,28 +43,13 @@ apt -y install live-build live-boot-doc live-config-doc
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
 lb config
 rsync -av --progress ${OLDPWD}/debian-live/config/ config/
+
+# VS Code
 #wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft.asc
 #cp microsoft.asc config/archives/code.key.binary
 #cp microsoft.asc config/archives/code.key.chroot
 # gpg --dearmor < microsoft.asc > config/archives/vscode.key.chroot
 # cp config/archives/vscode.key.chroot config/archives/vscode.key.binary
 lb build
-# mkdir -p ${ORIG_CD} ${NEW_CD} ${CUSTOM} ${SQUASHFS}
-# wget --mirror --no-directories ${ISO_URL}
-# wget --mirror --no-directories ${ECLIPSE_CPP_URL}
-# wget --mirror --no-directories ${ECLIPSE_JAVA_URL}
-
-# ISO_NAME=$(basename ${ISO_URL})
-# if mountpoint -q ${ORIG_CD}; then
-#     echo "${ORIG_CD} already mounted"
-# else
-#     mount -o loop ${ISO_NAME} ${ORIG_CD}
-# fi
-
-# if mountpoint -q ${ORIG_CD}; then
-#     umount ${ORIG_CD}
-# else
-#     echo "${ORIG_CD} already unmounted"
-# fi
 
 popd
