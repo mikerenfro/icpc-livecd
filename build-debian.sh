@@ -41,7 +41,9 @@ apt -y install live-build live-boot-doc live-config-doc
 
 # Preparations
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
-lb config
+lb config \
+    --bootappend-live "boot=live components quiet splash noroot" \
+    --bootappend-live-failsafe "boot=live components memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=788 noroot"
 rsync -av --progress ${OLDPWD}/debian-live/config/ config/
 
 # VS Code
