@@ -1,0 +1,13 @@
+#
+# Shorewall version 4 - Policy File
+#
+# For information about entries in this file, type "man shorewall-policy"
+#
+# The manpage is also online at
+# http://www.shorewall.net/manpages/shorewall-policy.html
+#
+###############################################################################
+#SOURCE	DEST	POLICY		LOGLEVEL	RATE		CONNLIMIT
+#$FW	net	ACCEPT
+$FW	net	DROP		$LOG_LEVEL
+net	all	DROP		$LOG_LEVEL
