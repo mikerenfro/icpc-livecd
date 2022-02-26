@@ -21,21 +21,6 @@ ECLIPSE_URL_BASE=https://mirror.umd.edu/eclipse/technology/epp/downloads/release
 ECLIPSE_CPP_URL=${ECLIPSE_URL_BASE}/${ECLIPSE_RELEASE}/R/eclipse-cpp-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
 ECLIPSE_JAVA_URL=${ECLIPSE_URL_BASE}/${ECLIPSE_RELEASE}/R/eclipse-java-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
 
-function mount_pseudo_if_needed {
-    if mountpoint -q $1; then
-        echo "$1 already mounted"
-    else
-        mount -t $2 none $1
-    fi
-}
-function umount_pseudo_if_needed {
-    if mountpoint -q $1; then
-        umount $1
-    else
-        echo "$1 already unmounted"
-    fi
-}
-
 # Dependencies
 apt -y install live-build live-boot-doc live-config-doc
 
