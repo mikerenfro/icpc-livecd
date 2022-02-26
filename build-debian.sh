@@ -43,9 +43,8 @@ apt -y install live-build live-boot-doc live-config-doc
 OLD_DIR=$PWD
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
 lb config
-rsync -av --progress ${OLD_DIR}/debian-live/config/archives/ config/archives/
-cp config/archives/vscode.list.chroot config/archives/vscode.list.binary
-wget -q --mirror --no-directories https://packages.microsoft.com/keys/microsoft.asc
+rsync -av --progress ${OLD_DIR}/debian-live/config/ config/
+wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft.asc
 gpg --dearmor < microsoft.asc > config/archives/vscode.key.chroot
 cp config/archives/vscode.key.chroot config/archives/vscode.key.binary
 lb build
