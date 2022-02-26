@@ -4,7 +4,7 @@ set -e
 # References:
 
 MAJOR_RELEASE=11.2.0
-WORKDIR=~/icpc-livecd
+WORKDIR=~/icpc
 ORIG_CD=${WORKDIR}/original-cd
 NEW_CD=${WORKDIR}/cd
 CUSTOM=${WORKDIR}/custom
@@ -35,6 +35,9 @@ function umount_pseudo_if_needed {
         echo "$1 already unmounted"
     fi
 }
+
+# Dependencies
+apt -y install live-build live-boot-doc live-config-doc
 
 # Preparations
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
