@@ -1,4 +1,5 @@
 apt-transport-https
 ca-certificates
+shorewall
 task-xfce-desktop
 build-essential openjdk-17-jdk python2.7 emacs vim
