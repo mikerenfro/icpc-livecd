@@ -44,9 +44,9 @@ OLD_DIR=$PWD
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
 lb config
 rsync -av --progress ${OLD_DIR}/debian-live/config/ config/
-wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft.asc
-gpg --dearmor < microsoft.asc > config/archives/vscode.key.chroot
-cp config/archives/vscode.key.chroot config/archives/vscode.key.binary
+# wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft.asc
+# gpg --dearmor < microsoft.asc > config/archives/vscode.key.chroot
+# cp config/archives/vscode.key.chroot config/archives/vscode.key.binary
 lb build
 # mkdir -p ${ORIG_CD} ${NEW_CD} ${CUSTOM} ${SQUASHFS}
 # wget --mirror --no-directories ${ISO_URL}
