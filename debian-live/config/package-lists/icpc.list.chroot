@@ -1,3 +1,4 @@
+apt-transport-https
 ca-certificates
 task-xfce-desktop
 build-essential openjdk-17-jdk python2.7
