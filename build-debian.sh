@@ -40,21 +40,30 @@ function umount_pseudo_if_needed {
 apt -y install live-build live-boot-doc live-config-doc
 
 # Preparations
+OLD_DIR=$(PWD)
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
-mkdir -p ${ORIG_CD} ${NEW_CD} ${CUSTOM} ${SQUASHFS}
-wget --mirror --no-directories ${ISO_URL}
-wget --mirror --no-directories ${ECLIPSE_CPP_URL}
-wget --mirror --no-directories ${ECLIPSE_JAVA_URL}
-ISO_NAME=$(basename ${ISO_URL})
-if mountpoint -q ${ORIG_CD}; then
-    echo "${ORIG_CD} already mounted"
-else
-    mount -o loop ${ISO_NAME} ${ORIG_CD}
-fi
+lb config
+rsync -av --progress ${OLD_DIR}/config/archives/ config/archives/
+wget -qO- --mirror --no-directories https://packages.microsoft.com/keys/microsoft.asc
+gpg --dearmor < microsoft.asc > config/archives/vscode.key.chrootx
+cp config/archives/vscode.key.chroot config/archives/vscode.key.binary
+lb build
+# mkdir -p ${ORIG_CD} ${NEW_CD} ${CUSTOM} ${SQUASHFS}
+# wget --mirror --no-directories ${ISO_URL}
+# wget --mirror --no-directories ${ECLIPSE_CPP_URL}
+# wget --mirror --no-directories ${ECLIPSE_JAVA_URL}
 
-if mountpoint -q ${ORIG_CD}; then
-    umount ${ORIG_CD}
-else
-    echo "${ORIG_CD} already unmounted"
-fi
+# ISO_NAME=$(basename ${ISO_URL})
+# if mountpoint -q ${ORIG_CD}; then
+#     echo "${ORIG_CD} already mounted"
+# else
+#     mount -o loop ${ISO_NAME} ${ORIG_CD}
+# fi
+
+# if mountpoint -q ${ORIG_CD}; then
+#     umount ${ORIG_CD}
+# else
+#     echo "${ORIG_CD} already unmounted"
+# fi
+
 popd
