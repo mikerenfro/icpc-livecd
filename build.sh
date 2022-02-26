@@ -30,9 +30,9 @@ wget --mirror --no-directories ${ECLIPSE_JAVA_URL}
 ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
 mkdir -p ${ECLIPSE_DIR}/{cpp,java}
 tar --strip-components=1 -C ${ECLIPSE_DIR}/cpp \
-    -zxf $(basename $ECLIPSE_CPP_URL})
+    -zxf $(basename ${ECLIPSE_CPP_URL})
 tar --strip-components=1 -C ${ECLIPSE_DIR}/java \
-    -zxf $(basename $ECLIPSE_JAVA_URL})
+    -zxf $(basename ${ECLIPSE_JAVA_URL})
 
 # Preparations
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
