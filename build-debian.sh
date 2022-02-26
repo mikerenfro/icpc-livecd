@@ -40,7 +40,7 @@ function umount_pseudo_if_needed {
 apt -y install live-build live-boot-doc live-config-doc
 
 # Preparations
-OLD_DIR=$(PWD)
+OLD_DIR=$PWD
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
 lb config
 rsync -av --progress ${OLD_DIR}/config/archives/ config/archives/
