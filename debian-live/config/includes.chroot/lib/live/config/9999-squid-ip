@@ -35,7 +35,7 @@ Init ()
 Config ()
 {
 	#check if shorewall rules file exists
-	if [ -e /etc/shorewall/rules]
+	if [ -e /etc/shorewall/rules ]
 	then
 		exit 0
 	fi
