@@ -40,7 +40,7 @@ Config ()
 		exit 0
 	fi
 
-	echo "Squid(ACCEPT)	$FW		net:${SQUID_IP}" >> /etc/shorewall/rules
+	echo "Squid(ACCEPT)	\$FW		net:${SQUID_IP}" >> /etc/shorewall/rules
 
 	cat >> /etc/environment <<EOD
 http_proxy=http://${SQUID_IP}:3128/
