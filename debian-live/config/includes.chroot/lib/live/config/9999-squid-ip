@@ -15,7 +15,7 @@ set -e
 Cmdline ()
 {
 	# get squid ip from commandline
-	if [[ ${LIVE_CONFIG_CMDLINE} =~ squid-ip=\'([^\']+)\' ]]
+	if [[ ${LIVE_CONFIG_CMDLINE} =~ squid-ip=([a-f0-9:\.]+) ]]
 	then
 		SQUID_IP="${BASH_REMATCH[1]}"
 	fi
