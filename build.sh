@@ -39,8 +39,8 @@ gpg --dearmor < microsoft.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
 # Preparations
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
 lb config \
-    --bootappend-live "boot=live components quiet splash noroot" \
-    --bootappend-live-failsafe "boot=live components memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=788 noroot"
+    --bootappend-live 'boot=live components quiet splash root-ssh-key=\"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDklBg0kiico24UvcyjAcRl3ljLJasKMX5hQAGNdMLklv2gpd1hIRHE1CLP1nK7Wjj/6Cp22sQJu6kOToxstzPyKP6eDebf4rU47AJiaER3AqFBLaXtvpcyB2qRhke6uqDHvbfQwXlO/SX+OzNF7jvKAaclfw5z8Kh3HGOjr4kjMoGdZPblF8jaEKXbCYVe+HBOcJPnVuKBP8qRsxZM9nHCk3mvFlJUT5ru4Enb/wcOdsic7oUCDSxItdPJmXN8hJ1K8SJmAelT01uvY/Tp0MraCvC+j3UgSQkpgkOUpEBmzUC435NC1vt0G4TxmmfuOgZEJ2EiBnw+/ZriQqYnk8D7\" squid-ip="68.66.205.120" printer-ip="192.168.252.5" printer-port="631"' \
+    --bootappend-live-failsafe 'boot=live components memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=788 root-ssh-key=\"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDklBg0kiico24UvcyjAcRl3ljLJasKMX5hQAGNdMLklv2gpd1hIRHE1CLP1nK7Wjj/6Cp22sQJu6kOToxstzPyKP6eDebf4rU47AJiaER3AqFBLaXtvpcyB2qRhke6uqDHvbfQwXlO/SX+OzNF7jvKAaclfw5z8Kh3HGOjr4kjMoGdZPblF8jaEKXbCYVe+HBOcJPnVuKBP8qRsxZM9nHCk3mvFlJUT5ru4Enb/wcOdsic7oUCDSxItdPJmXN8hJ1K8SJmAelT01uvY/Tp0MraCvC+j3UgSQkpgkOUpEBmzUC435NC1vt0G4TxmmfuOgZEJ2EiBnw+/ZriQqYnk8D7\" squid-ip="68.66.205.120" printer-ip="192.168.252.5" printer-port="631"'
 rsync -av --progress ${OLDPWD}/debian-live/config/ config/
 
 lb build
