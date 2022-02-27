@@ -5,10 +5,6 @@ set -e
 
 MAJOR_RELEASE=11.2.0
 WORKDIR=~/icpc
-ORIG_CD=${WORKDIR}/original-cd
-NEW_CD=${WORKDIR}/cd
-CUSTOM=${WORKDIR}/custom
-SQUASHFS=${WORKDIR}/squashfs
 PACKAGES="build-essential emacs neovim code openjdk-17-jdk-headless python2.7 python3.5"
 ECLIPSE_RELEASE=2021-12
 
