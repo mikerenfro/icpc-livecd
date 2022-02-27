@@ -39,10 +39,10 @@ gpg --dearmor < microsoft.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
 
 # Preparations
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
-BOOTAPPEND_COMMON="boot=live components root-ssh-key=\"${SSH_KEY_TYPE} ${SSH_PUBLIC_KEY}\" squid-ip=\"${SQUID_IP}\" printer-ip=\"${PRINTER_IP}\" printer-port=\"${PRINTER_PORT}\""
+BOOTAPPEND_COMMON="boot=live components squid-ip=${SQUID_IP} printer-ip=${PRINTER_IP} printer-port=${PRINTER_PORT}"
 lb config \
-    --bootappend-live "${BOOTAPPEND_COMMON} quiet splash" \
-    --bootappend-live-failsafe "${BOOTAPPEND_COMMON} memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=788"
+    --bootappend-live "${BOOTAPPEND_COMMON} root-ssh-key=\"${SSH_KEY_TYPE} ${SSH_PUBLIC_KEY}\" quiet splash" \
+    --bootappend-live-failsafe "${BOOTAPPEND_COMMON} root-ssh-key=\"${SSH_KEY_TYPE} ${SSH_PUBLIC_KEY}\" memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=788"
 rsync -av --progress ${OLDPWD}/debian-live/config/ config/
 
 lb build
