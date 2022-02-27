@@ -36,7 +36,9 @@ tar --strip-components=1 -C ${ECLIPSE_DIR}/java \
 
 # VS Code staging
 wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft.asc
-gpg --dearmor < microsoft.asc > debian-live/config/includes.chroot/etc/apt/trusted.gpg.d/packages.microsoft.gpg
+TRUSTED_GPG_DIR=debian-live/config/includes.chroot/etc/apt/trusted.gpg.d
+mkdir =p ${TRUSTED_GPG_DIR}
+gpg --dearmor < microsoft.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
 
 # Preparations
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
