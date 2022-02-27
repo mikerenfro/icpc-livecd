@@ -1,8 +1,11 @@
 # A Debian-based LiveCD builder for ICPC
 
-Summary: a 64-bit Debian Live installation for the International Collegiate Programming Competition (ICPC).
+Summary:
+a 64-bit Debian Live installation for the International Collegiate Programming Competition (ICPC).
 
-Includes: gcc, g++, Java, Python 2, Python 3, Visual Studio Code, Eclipse, Vim, Emacs
+Includes: gcc, g++, Java, Python 2, Python 3, Visual Studio Code, Eclipse, Vim, Emacs.
+Should be locked down to prevent user administrative access, and restricts all network traffic to a preconfigured Squid proxy server.
+Currently preconfigured for the US Mid-Central region proxy server, and only administerable via root ssh key.
 
 System requirements:
 
