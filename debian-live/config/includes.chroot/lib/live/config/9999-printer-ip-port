@@ -1,0 +1,55 @@
+#!/bin/bash
+
+## printer-ip-port(7) - Set printer ip and port for live systems
+## Adapted from root-ssh-key,
+##   Copyright (C) 2006-2014 Daniel Baumann <mail@daniel-baumann.ch>
+##   Copyright (C) 2015 Bernhard Dick <bernhard@bdick.de>
+##
+## printer-ip-port comes with ABSOLUTELY NO WARRANTY; for details see COPYING.
+## This is free software, and you are welcome to redistribute it
+## under certain conditions; see COPYING for details.
+
+
+set -e
+
+Cmdline ()
+{
+	# get printer ip from commandline
+	if [[ ${LIVE_CONFIG_CMDLINE} =~ printer-ip=\"([^\"]+)\" ]]
+	then
+		PRINTER_IP="${BASH_REMATCH[1]}"
+	fi
+	# get printer port from commandline
+	if [[ ${LIVE_CONFIG_CMDLINE} =~ printer-port=\"([^\"]+)\" ]]
+	then
+		PRINTER_PORT="${BASH_REMATCH[1]}"
+	fi
+}
+
+Init ()
+{
+	# Checking if package is installed or already configured
+	if [ -e /var/lib/live/config/printer-ip ]
+	then
+		exit 0
+	fi
+
+	echo -n " printer-ip"
+}
+
+Config ()
+{
+	#check if shorewall rules file exists
+	if [ -e /etc/shorewall/rules]
+	then
+		exit 0
+	fi
+	echo "ACCEPT	$FW	net:${PRINTER_IP}	tcp	${PRINTER_PORT}" >> /etc/shorewall/rules
+
+	# Creating state file
+	touch /var/lib/live/config/printer-ip
+}
+
+Cmdline
+Init
+Config

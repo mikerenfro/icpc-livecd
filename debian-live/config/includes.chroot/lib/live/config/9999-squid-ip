@@ -1,0 +1,61 @@
+#!/bin/bash
+
+## squid-ip(7) - Set squid server for live systems
+## Adapted from root-ssh-key,
+##   Copyright (C) 2006-2014 Daniel Baumann <mail@daniel-baumann.ch>
+##   Copyright (C) 2015 Bernhard Dick <bernhard@bdick.de>
+##
+## squid-ip comes with ABSOLUTELY NO WARRANTY; for details see COPYING.
+## This is free software, and you are welcome to redistribute it
+## under certain conditions; see COPYING for details.
+
+
+set -e
+
+Cmdline ()
+{
+	# get squid ip from commandline
+	if [[ ${LIVE_CONFIG_CMDLINE} =~ squid-ip=\"([^\"]+)\" ]]
+	then
+		SQUID_IP="${BASH_REMATCH[1]}"
+	fi
+}
+
+Init ()
+{
+	# Checking if package is installed or already configured
+	if [ -e /var/lib/live/config/squid-ip ]
+	then
+		exit 0
+	fi
+
+	echo -n " squid-ip"
+}
+
+Config ()
+{
+	#check if shorewall rules file exists
+	if [ -e /etc/shorewall/rules]
+	then
+		exit 0
+	fi
+
+	echo "Squid(ACCEPT)	$FW		net:${SQUID_IP}" >> /etc/shorewall/rules
+
+	cat >> /etc/environment <<EOD
+http_proxy=http://${SQUID_IP}:3128/
+https_proxy=http://${SQUID_IP}:3128/
+ftp_proxy=http://${SQUID_IP}:3128/
+no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
+HTTP_PROXY=http://${SQUID_IP}:3128/
+HTTPS_PROXY=http://${SQUID_IP}:3128/
+FTP_PROXY=http://${SQUID_IP}:3128/
+NO_PROXY="localhost,127.0.0.1,localaddress,.localdomain.com"
+EOD
+	# Creating state file
+	touch /var/lib/live/config/squid-ip
+}
+
+Cmdline
+Init
+Config

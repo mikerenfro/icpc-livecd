@@ -18,4 +18,4 @@
 Invalid(DROP)	net		$FW		tcp
 SSH(ACCEPT)	net		$FW
 Ping(ACCEPT)	net		$FW
-Squid(ACCEPT)	$FW		net:68.66.205.120
+# Squid and printer rules to be added on boot, go below here:
