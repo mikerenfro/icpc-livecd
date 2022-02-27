@@ -34,6 +34,10 @@ tar --strip-components=1 -C ${ECLIPSE_DIR}/cpp \
 tar --strip-components=1 -C ${ECLIPSE_DIR}/java \
     -zxf $(basename ${ECLIPSE_JAVA_URL})
 
+# VS Code staging
+wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft.asc
+gpg --dearmor < microsoft.asc > config/includes.chroot/etc/apt/trusted.gpg.d/packages.microsoft.gpg
+
 # Preparations
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
 lb config \
@@ -41,12 +45,6 @@ lb config \
     --bootappend-live-failsafe "boot=live components memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=788 noroot"
 rsync -av --progress ${OLDPWD}/debian-live/config/ config/
 
-# VS Code
-#wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft.asc
-#cp microsoft.asc config/archives/code.key.binary
-#cp microsoft.asc config/archives/code.key.chroot
-# gpg --dearmor < microsoft.asc > config/archives/vscode.key.chroot
-# cp config/archives/vscode.key.chroot config/archives/vscode.key.binary
 lb build
 
 popd
