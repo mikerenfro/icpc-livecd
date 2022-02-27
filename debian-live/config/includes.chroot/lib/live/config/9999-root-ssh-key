@@ -34,7 +34,7 @@ Init ()
 Config ()
 {
 	#check if key file exists
-	if [ -e /root/.ssh/authorized_keys]
+	if [ -e /root/.ssh/authorized_keys ]
 	then
 		exit 0
 	fi
