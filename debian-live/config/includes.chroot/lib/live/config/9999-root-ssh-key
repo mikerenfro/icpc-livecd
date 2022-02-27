@@ -14,7 +14,7 @@ set -e
 Cmdline ()
 {
 	# get ssh key fro, commandline
-	if [[ ${LIVE_CONFIG_CMDLINE} =~ root-ssh-key=\"([^\"]+)\" ]]
+	if [[ ${LIVE_CONFIG_CMDLINE} =~ root-ssh-key=\'([^\']+)\' ]]
 	then
 		ROOT_SSH_KEY="${BASH_REMATCH[1]}"
 	fi
