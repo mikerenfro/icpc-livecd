@@ -46,6 +46,7 @@ Config ()
 	fi
 	echo "ACCEPT	\$FW	net:${PRINTER_IP}	tcp	${PRINTER_PORT}" >> /etc/shorewall/rules
 
+	systemctl restart shorewall
 	# Creating state file
 	touch /var/lib/live/config/printer-ip
 }

@@ -52,6 +52,7 @@ HTTPS_PROXY=http://${SQUID_IP}:3128/
 FTP_PROXY=http://${SQUID_IP}:3128/
 NO_PROXY="localhost,127.0.0.1,localaddress,.localdomain.com"
 EOD
+	systemctl restart shorewall
 	# Creating state file
 	touch /var/lib/live/config/squid-ip
 }
