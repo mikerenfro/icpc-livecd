@@ -6,7 +6,7 @@ JAVAC=javac
 JAVACFLAGS=-encoding UTF-8 -sourcepath . -d .
 JAVA=java
 JAVAFLAGS=-Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms1920m -Xmx1920m -cp .
-PY3=python
+PY3=pypy3
 PY3FLAGS=
 PY2=pypy
 PY2FLAGS=
