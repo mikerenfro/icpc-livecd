@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <title>ICPC Mid-Central Environment Notes</title>
+    </head>
+    <body>
+        <h1>Testing Compilers</h1>
+        <p>
+            You can test all compilers by opening a terminal from the
+            <code>Applications / Terminal Emulator</code> menu, changing
+            directories with <code>cd ~/Desktop/test-compilers</code>, and
+            running <code>make</code>.
+            <code>make</code> will compile and run example programs in
+            each language with matching options to Kattis.
+        </p>
+        <h1>Languages Supported</h1>
+        <ul>
+            <li>C (using gcc 10.2.1)</li>
+            <li>C++ (using g++ 10.2.1)</li>
+            <li>Java (using OpenJDK 17.0.2)</li>
+            <li>Python 2 (using pypy 7.3.3 for Python 2.7.18)</li>
+            <li>Python 3 (using pypy 7.3.5 for Python 3.7.10)</li>
+        </ul>
+        <h1>IDEs / Text Editors Provided</h1>
+        <p><b>All IDEs and text editors are provided AS IS, with no PRE-CONFIGURATION.
+        It is up to you to know how to configure and use your preferred software.</b></p>
+        <ul>
+            <li>Eclipse (for C/C++ and Java)</li>
+            <li>emacs</li>
+            <li>nano</li>
+            <li>vim</li>
+            <li>Visual Studio Code</li>
+        </ul>
+        <h1>How to Compile and Run Your Code from the Command Line</h1>
+        <p>All compiler and run options below are the same options that
+           Kattis uses. Open a terminal from the <code>Applications 
+           / Terminal Emulator</code> menu, <code>cd</code> to wherever
+           your source code is saved, then run the command shown below
+           for your preferred language.
+        </p>
+        <h2>C</h2>
+        <p><code>gcc -g -O2 -std=gnu11 -static -o program program.c -lm</code>
+        and <code>./program</code></p>
+        <h2>C++</h2>
+        <p><code>g++ -g -O2 -std=gnu++17 -static -o program program.cpp</code>
+        and <code>./program</code></p>
+        <h2>Java</h2>
+        <p><code>javac -encoding UTF-8 -sourcepath . -cp .:./* -d . program.java</code>
+        and <code>java -Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms{memlim}m -Xmx{memlim}m -cp .:./* program</code>
+        where <code>{memlim}</code> is the designated memory limit for the particular problem.</p>
+        <h2>Python 2</h2>
+        <p><code>pypy program.py</code></p>
+        <h2>Python 3</h2>
+        <p><code>pypy3 program.py</code></p>
+    </body>
+</html>
