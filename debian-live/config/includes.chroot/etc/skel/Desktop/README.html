@@ -15,14 +15,14 @@
         <h1>Languages Supported</h1>
         <ul>
             <li>C (using gcc 10.2.1)</li>
-            <li>C++< (using g++ 10.2.1)/li>
+            <li>C++ (using g++ 10.2.1)</li>
             <li>Java (using OpenJDK 17.0.2)</li>
             <li>Python 2 (using pypy 7.3.3 for Python 2.7.18)</li>
             <li>Python 3 (using pypy 7.3.5 for Python 3.7.10)</li>
         </ul>
         <h1>IDEs / Text Editors Provided</h1>
         <p><b>All IDEs and text editors are provided AS IS, with no PRE-CONFIGURATION.
-        It is up to you to know how to configure and use your preferred software.</b>></p>
+        It is up to you to know how to configure and use your preferred software.</b></p>
         <ul>
             <li>Eclipse (for C/C++ and Java)</li>
             <li>emacs</li>
@@ -44,7 +44,7 @@
         <p><code>g++ -g -O2 -std=gnu++17 -static -o program program.cpp</code>
         and <code>./program</code></p>
         <h2>Java</h2>
-        <p><code>javac -encoding UTF-8 -sourcepath . -cp ./* -d . program.java</code>
+        <p><code>javac -encoding UTF-8 -sourcepath . -cp .:./* -d . program.java</code>
         and <code>java -Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms{memlim}m -Xmx{memlim}m -cp .:./* program</code>
         where <code>{memlim}</code> is the designated memory limit for the particular problem.</p>
         <h2>Python 2</h2>

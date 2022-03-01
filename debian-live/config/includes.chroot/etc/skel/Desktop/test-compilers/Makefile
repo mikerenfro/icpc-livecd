@@ -3,7 +3,7 @@ CFLAGS=-g -O2 -std=gnu11 -static -lm
 CXX=g++
 CXXFLAGS=-g -O2 -std=gnu++17 -static
 JAVAC=javac
-JAVACFLAGS=-encoding UTF-8 -sourcepath . -cp ./* -d .
+JAVACFLAGS=-encoding UTF-8 -sourcepath . -cp .:./* -d .
 JAVA=java
 JAVAFLAGS=-Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms1920m -Xmx1920m -cp .:./*
 PY3=pypy3
