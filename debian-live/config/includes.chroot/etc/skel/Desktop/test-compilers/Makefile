@@ -1,7 +1,7 @@
 CC=gcc
-CFLAGS=-g -O2 -std=gnu99 -static -lm
+CFLAGS=-g -O2 -std=gnu11 -static -lm
 CXX=g++
-CXXFLAGS=-g -O2 -std=gnu++14 -static
+CXXFLAGS=-g -O2 -std=gnu++17 -static
 JAVAC=javac
 JAVACFLAGS=-encoding UTF-8 -sourcepath . -d .
 JAVA=java
