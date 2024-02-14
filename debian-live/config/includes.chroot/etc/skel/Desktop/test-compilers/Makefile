@@ -1,26 +1,22 @@
 CC=gcc
-CFLAGS=-g -O2 -std=gnu11 -static -lm
+CFLAGS=-x c -g -O2 -std=gnu11 -static -lm
 CXX=g++
-CXXFLAGS=-g -O2 -std=gnu++17 -static
+CXXFLAGS=-x c++ -g -O2 -std=gnu++20 -static
 JAVAC=javac
-JAVACFLAGS=-encoding UTF-8 -sourcepath . -cp .:./* -d .
+JAVACFLAGS=-encoding UTF-8 -sourcepath . -d .
 JAVA=java
-JAVAFLAGS=-Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms1920m -Xmx1920m -cp .:./*
-PY3=pypy3
+JAVAFLAGS=-Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms1920m -Xmx1920m
+PY3=pypy3 -m py_compile
 PY3FLAGS=
-PY2=pypy
-PY2FLAGS=
 
 all: hw_icpc_c hw_icpc_cpp hw_icpc_java.class
-	@echo "C"
+	@echo "# Running in C"
 	./hw_icpc_c
-	@echo "C++"
+	@echo "# Running in C++"
 	./hw_icpc_cpp
-	@echo "Java"
+	@echo "# Running in Java"
 	$(JAVA) $(JAVAFLAGS) hw_icpc_java
-	@echo "Python 2"
-	$(PY2) hw_icpc_py2.py
-	@echo "Python 3"
+	@echo "Running in Python 3"
 	$(PY3) hw_icpc_py3.py
 
 %.class: %.java
