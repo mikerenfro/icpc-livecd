@@ -1,3 +1,5 @@
 debian-live/config/includes.chroot/opt
 eclipse*.gz
 .vagrant/
+live-image-amd64.hybrid.iso
+pycharm-community-*.tar.gz
