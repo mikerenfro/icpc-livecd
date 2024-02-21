@@ -4,4 +4,4 @@ set -e
 # VS Code (after GPG key is installed)
 echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list
 apt-get -y update
-apt-get -y install code gvfs-bin
+apt-get -y install code

@@ -45,6 +45,7 @@ gpg --dearmor < microsoft.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
 # Preparations
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
 lb config \
+    --distribution bookworm \
     --bootappend-live "boot=live components quiet splash noroot toram" \
     --bootappend-live-failsafe "boot=live components memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=788 noroot toram"
 rsync -av --progress ${OLDPWD}/debian-live/config/ config/

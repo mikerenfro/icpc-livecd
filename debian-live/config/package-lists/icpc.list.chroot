@@ -7,5 +7,4 @@ emacs
 vim
 build-essential
 openjdk-17-jdk
-pypy
 pypy3
