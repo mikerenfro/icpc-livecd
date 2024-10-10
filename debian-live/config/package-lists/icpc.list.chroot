@@ -5,6 +5,7 @@ openssh-server
 task-xfce-desktop
 emacs
 vim
+g++-11
 build-essential
 openjdk-17-jdk
 pypy3

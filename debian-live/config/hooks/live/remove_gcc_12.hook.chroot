@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 10
+update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 10
