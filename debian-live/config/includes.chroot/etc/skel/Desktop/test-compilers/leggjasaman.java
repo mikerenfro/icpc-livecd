@@ -5,6 +5,6 @@ public class leggjasaman {
         Scanner in = new Scanner(System.in);
         int n = in.nextInt();
         int m = in.nextInt();
-        System.out.format("%f\n", n+m);
+        System.out.format("%d\n", n+m);
     }
 }
