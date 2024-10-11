@@ -9,3 +9,5 @@ g++-11
 build-essential
 openjdk-17-jdk
 pypy3
+libglib2.0-bin
+dbus-x11
