@@ -53,6 +53,10 @@ TRUSTED_GPG_DIR=debian-live/config/includes.chroot/etc/apt/trusted.gpg.d
 mkdir -p ${TRUSTED_GPG_DIR}
 gpg --dearmor < microsoft.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
 
+if [ "$1" == "allow-internet" ]; then
+    mv debian-live/config/includes.chroot/etc/environment debian-live/config/includes.chroot/etc/_environment
+    mv debian-live/config/package-lists/restrict-internet.list.chroot debian-live/config/package-lists/restrict-internet._list.chroot
+fi
 # Preparations
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
 lb config \
@@ -62,5 +66,10 @@ lb config \
 rsync -av --progress ${OLDPWD}/debian-live/config/ config/
 
 lb build
+
+if [ "$1" == "allow-internet" ]; then
+    mv debian-live/config/includes.chroot/etc/_environment debian-live/config/includes.chroot/etc/environment
+    mv debian-live/config/package-lists/restrict-internet._list.chroot debian-live/config/package-lists/restrict-internet.list.chroot
+fi
 
 popd
