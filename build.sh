@@ -67,9 +67,9 @@ rsync -av --progress ${OLDPWD}/debian-live/config/ config/
 
 lb build
 
+popd
+
 if [ "$1" == "allow-internet" ]; then
     mv debian-live/config/includes.chroot/etc/_environment debian-live/config/includes.chroot/etc/environment
     mv debian-live/config/package-lists/restrict-internet._list.chroot debian-live/config/package-lists/restrict-internet.list.chroot
 fi
-
-popd
