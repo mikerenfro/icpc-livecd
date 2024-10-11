@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=LiClipse
+Comment=
+Icon=applications-development
+Exec=/opt/liclipse/LiClipse

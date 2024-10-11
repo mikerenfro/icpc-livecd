@@ -6,6 +6,7 @@ PACKAGES="gcc-11 g++-11 build-essential emacs neovim code openjdk-17-jdk-headles
 ECLIPSE_RELEASE=2024-12
 ECLIPSE_RELEASE_TYPE=M1
 PYCHARM_RELEASE=2023.3.3
+LICLIPSE_VERSION=11.1.0
 
 # Hopefully nothing to change below this line
 
@@ -13,6 +14,8 @@ ECLIPSE_URL_BASE=https://mirror.umd.edu/eclipse/technology/epp/downloads/release
 ECLIPSE_CPP_URL=${ECLIPSE_URL_BASE}/${ECLIPSE_RELEASE}/${ECLIPSE_RELEASE_TYPE}/eclipse-cpp-${ECLIPSE_RELEASE}-${ECLIPSE_RELEASE_TYPE}-linux-gtk-x86_64.tar.gz
 ECLIPSE_JAVA_URL=${ECLIPSE_URL_BASE}/${ECLIPSE_RELEASE}/${ECLIPSE_RELEASE_TYPE}/eclipse-java-${ECLIPSE_RELEASE}-${ECLIPSE_RELEASE_TYPE}-linux-gtk-x86_64.tar.gz
 PYCHARM_URL=https://download.jetbrains.com/python/pycharm-community-${PYCHARM_RELEASE}.tar.gz
+LICLIPSE_URL_BASE=https://www.mediafire.com/file_premium/yvh4pjh3viveurn/
+LICLIPSE_URL=${LICLIPSE_URL_BASE}/liclipse_${LICLIPSE_VERSION}_linux.gtk.x86_64.tar.gz
 # Dependencies
 apt update
 apt -y install live-build live-boot-doc live-config-doc
@@ -21,6 +24,7 @@ apt -y install live-build live-boot-doc live-config-doc
 wget --mirror --no-directories ${ECLIPSE_CPP_URL}
 wget --mirror --no-directories ${ECLIPSE_JAVA_URL}
 wget --mirror --no-directories ${PYCHARM_URL}
+wget --mirror --no-directories ${LICLIPSE_URL}
 
 ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
 if [ ! -d ${ECLIPSE_DIR} ]; then
@@ -35,6 +39,12 @@ if [ ! -d ${PYCHARM_DIR} ]; then
     mkdir -p ${PYCHARM_DIR}
     tar --strip-components=1 -C ${PYCHARM_DIR} \
         -zxf $(basename ${PYCHARM_URL})
+fi
+LICLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/liclipse
+if [ ! -d ${LICLIPSE_DIR} ]; then
+    mkdir -p ${LICLIPSE_DIR}
+    tar --strip-components=1 -C ${LICLIPSE_DIR} \
+        -zxf $(basename ${LICLIPSE_URL})
 fi
 
 # VS Code staging
