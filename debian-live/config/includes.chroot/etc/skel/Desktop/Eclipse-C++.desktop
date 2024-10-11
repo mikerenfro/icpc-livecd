@@ -1,7 +1,1 @@
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Eclipse C++
-Comment=
-Icon=applications-development
-Exec=/opt/eclipse/cpp/eclipse
+/usr/share/applications/Eclipse-C++.desktop

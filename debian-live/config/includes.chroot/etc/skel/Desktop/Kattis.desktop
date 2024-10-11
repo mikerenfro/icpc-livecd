@@ -1,7 +1,1 @@
-[Desktop Entry]
-Version=1.0
-Type=Link
-Name=Kattis
-Comment=
-Icon=internet-web-browser
-URL=https://mcpc21.kattis.com/
+/usr/share/applications/Kattis.desktop

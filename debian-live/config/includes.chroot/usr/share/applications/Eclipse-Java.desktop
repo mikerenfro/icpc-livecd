@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Eclipse Java
+Comment=
+Icon=applications-development
+Exec=/opt/eclipse/java/eclipse

@@ -1,7 +1,1 @@
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=PyCharm
-Comment=
-Icon=applications-development
-Exec=/opt/pycharm/bin/pycharm.sh
+/usr/share/applications/PyCharm.desktop
