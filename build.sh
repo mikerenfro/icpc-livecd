@@ -5,7 +5,7 @@ WORKDIR=~/icpc
 PACKAGES="gcc-11 g++-11 build-essential emacs neovim code openjdk-17-jdk-headless pypy3"
 ECLIPSE_RELEASE=2024-12
 ECLIPSE_RELEASE_TYPE=M1
-PYCHARM_RELEASE=2023.3.3
+PYCHARM_RELEASE=2024.2.3
 LICLIPSE_VERSION=11.1.0
 
 # Hopefully nothing to change below this line
