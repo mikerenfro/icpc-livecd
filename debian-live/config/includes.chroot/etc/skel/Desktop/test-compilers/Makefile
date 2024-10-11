@@ -6,7 +6,7 @@ JAVAC=javac
 JAVACFLAGS=-encoding UTF-8 -sourcepath . -d .
 JAVA=java
 JAVAFLAGS=-Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms1920m -Xmx1920m
-PY3=pypy3 -m py_compile
+PY3=pypy3
 
 all: hw_icpc_c hw_icpc_cpp hw_icpc_java.class leggjasaman_c leggjasaman_cpp leggjasaman_java.class
 	@echo "# Hello, World in C"
@@ -30,10 +30,10 @@ all: hw_icpc_c hw_icpc_cpp hw_icpc_java.class leggjasaman_c leggjasaman_cpp legg
 	./leggjasaman_cpp < 2.in | tee 2-test.ans
 	diff -u 2.ans 2-test.ans && echo passed || echo failed
 	@echo "# Testing Leggjasaman Java against input 1"
-	$(JAVA) $(JAVAFLAGS) leggjasaman < 1.in | tee 1-test.ans
+	$(JAVA) $(JAVAFLAGS) leggjasaman_java < 1.in | tee 1-test.ans
 	diff -u 1.ans 1-test.ans && echo passed || echo failed
 	@echo "# Testing Leggjasaman Java against input 2"
-	$(JAVA) $(JAVAFLAGS) leggjasaman < 2.in | tee 2-test.ans
+	$(JAVA) $(JAVAFLAGS) leggjasaman_java < 2.in | tee 2-test.ans
 	diff -u 2.ans 2-test.ans && echo passed || echo failed
 	@echo "# Testing Leggjasaman Python against input 1"
 	$(PY3) leggjasaman_py3.py < 1.in | tee 1-test.ans
