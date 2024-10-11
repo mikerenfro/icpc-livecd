@@ -8,7 +8,7 @@ JAVA=java
 JAVAFLAGS=-Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms1920m -Xmx1920m
 PY3=pypy3 -m py_compile
 
-all: hw_icpc_c hw_icpc_cpp hw_icpc_java.class leggjasaman_c leggjasaman_cpp leggjasaman.class
+all: hw_icpc_c hw_icpc_cpp hw_icpc_java.class leggjasaman_c leggjasaman_cpp leggjasaman_java.class
 	@echo "# Hello, World in C"
 	./hw_icpc_c
 	@echo "# Hello, World in C++"
@@ -48,7 +48,7 @@ all: hw_icpc_c hw_icpc_cpp hw_icpc_java.class leggjasaman_c leggjasaman_cpp legg
 %_cpp: %_cpp.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $<
 
-%.class: %.java
+%_java.class: %_java.java
 	$(JAVAC) $(JAVACFLAGS) $<
 
 clean:
