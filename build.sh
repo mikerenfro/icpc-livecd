@@ -3,14 +3,15 @@ set -e
 
 WORKDIR=~/icpc
 PACKAGES="gcc-11 g++-11 build-essential emacs neovim code openjdk-17-jdk-headless pypy3"
-ECLIPSE_RELEASE=2023-12
+ECLIPSE_RELEASE=2024-12
+ECLIPSE_RELEASE_TYPE=M1
 PYCHARM_RELEASE=2023.3.3
 
 # Hopefully nothing to change below this line
 
 ECLIPSE_URL_BASE=https://mirror.umd.edu/eclipse/technology/epp/downloads/release
-ECLIPSE_CPP_URL=${ECLIPSE_URL_BASE}/${ECLIPSE_RELEASE}/R/eclipse-cpp-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
-ECLIPSE_JAVA_URL=${ECLIPSE_URL_BASE}/${ECLIPSE_RELEASE}/R/eclipse-java-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
+ECLIPSE_CPP_URL=${ECLIPSE_URL_BASE}/${ECLIPSE_RELEASE}/${ECLIPSE_RELEASE_TYPE}/eclipse-cpp-${ECLIPSE_RELEASE}-${ECLIPSE_RELEASE_TYPE}-linux-gtk-x86_64.tar.gz
+ECLIPSE_JAVA_URL=${ECLIPSE_URL_BASE}/${ECLIPSE_RELEASE}/${ECLIPSE_RELEASE_TYPE}/eclipse-java-${ECLIPSE_RELEASE}-${ECLIPSE_RELEASE_TYPE}-linux-gtk-x86_64.tar.gz
 PYCHARM_URL=https://download.jetbrains.com/python/pycharm-community-${PYCHARM_RELEASE}.tar.gz
 # Dependencies
 apt update
