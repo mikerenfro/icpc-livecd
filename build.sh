@@ -17,14 +17,13 @@ PYCHARM_URL=https://download.jetbrains.com/python/pycharm-community-${PYCHARM_RE
 LICLIPSE_URL_BASE=https://www.mediafire.com/file_premium/yvh4pjh3viveurn/
 LICLIPSE_URL=${LICLIPSE_URL_BASE}/liclipse_${LICLIPSE_VERSION}_linux.gtk.x86_64.tar.gz
 # Dependencies
-apt update
-apt -y install live-build live-boot-doc live-config-doc
+sudo apt update
+sudo apt -y install live-build live-boot-doc live-config-doc
 
-# Eclipse staging
-wget --mirror --no-directories ${ECLIPSE_CPP_URL}
-wget --mirror --no-directories ${ECLIPSE_JAVA_URL}
-wget --mirror --no-directories ${PYCHARM_URL}
-wget --mirror --no-directories ${LICLIPSE_URL}
+# IDE staging
+for U in ${ECLIPSE_CPP_URL} ${ECLIPSE_JAVA_URL} ${PYCHARM_URL} ${LICLIPSE_URL}; do
+    wget -q --mirror --no-directories --progress=bar:force:noscroll ${U}
+done
 
 ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
 if [ ! -d ${ECLIPSE_DIR} ]; then

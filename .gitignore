@@ -3,3 +3,6 @@ eclipse*.gz
 .vagrant/
 live-image-amd64.hybrid.iso
 pycharm-community-*.tar.gz
+liclipse_*.tar.gz
+microsoft.asc
+debian-live/config/includes.chroot/etc/apt/trusted.gpg.d
