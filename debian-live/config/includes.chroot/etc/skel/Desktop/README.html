@@ -14,19 +14,19 @@
         </p>
         <h1>Languages Supported</h1>
         <ul>
-            <li>C (using gcc 10.2.1)</li>
-            <li>C++ (using g++ 10.2.1)</li>
-            <li>Java (using OpenJDK 17.0.2)</li>
-            <li>Python 3 (using pypy 7.3.5 for Python 3.7.10)</li>
+            <li>C (using gcc 11.3.0)</li>
+            <li>C++ (using g++ 11.3.0)</li>
+            <li>Java (using OpenJDK 17.0.13)</li>
+            <li>Python 3 (using PyPy 7.3.11 for Python 3.9.16)</li>
         </ul>
         <h1>IDEs / Text Editors Provided</h1>
         <p><b>All IDEs and text editors are provided AS IS, with no PRE-CONFIGURATION.
         It is up to you to know how to configure and use your preferred software.</b></p>
         <ul>
-            <li>Eclipse 2023-12 (for C/C++ and Java)</li>
+            <li>Eclipse 2024-09 (for C/C++, Java, and Python)</li>
             <li>emacs</li>
             <li>nano</li>
-            <li>PyCharm Community Edition 2023.3.3</li>
+            <li>PyCharm Community Edition 2024.2.4</li>
             <li>vim</li>
             <li>Visual Studio Code</li>
         </ul>
@@ -37,17 +37,34 @@
            your source code is saved, then run the command shown below
            for your preferred language.
         </p>
+
         <h2>C</h2>
-        <p><code>gcc -x c -g -O2 -std=gnu11 -static -o program program.c -lm</code>
-        and <code>./program</code></p>
+
+        <h3>Compile</h3>
+        <p><code>gcc -x c -g -O2 -std=gnu11 -static -o program program.c -lm</code></p>
+
+        <h3>Build</h3>
+        <p><code>./program</code></p>
+
         <h2>C++</h2>
-        <p><code>g++ -x c++ -g -O2 -std=gnu++17 -static -o program program.cpp</code>
-        and <code>./program</code></p>
+
+        <h3>Compile</h3>
+        <p><code>g++ -x c++ -g -O2 -std=gnu++17 -static -o program program.cpp</code></p>
+
+        <h3>Build</h3>
+        <p><code>./program</code></p>
+
         <h2>Java</h2>
-        <p><code>javac -encoding UTF-8 -sourcepath . -d . program.java</code>
-        and <code>java -Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms{memlim}m -Xmx{memlim}m -cp .:./* program</code>
+
+        <h3>Compile</h3>
+        <p><code>javac -encoding UTF-8 -sourcepath . -d . program.java</code></p>
+
+        <h3>Build</h3>
+        <p><code>java -Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms{memlim}m -Xmx{memlim}m -cp .:./* program</code>
         where <code>{memlim}</code> is the designated memory limit for the particular problem.</p>
+
         <h2>Python 3</h2>
+
         <p><code>pypy3 program.py</code></p>
     </body>
 </html>

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Eclipse
+Comment=
+Icon=applications-development
+Exec=/opt/eclipse/java-2024-09/eclipse/eclipse
