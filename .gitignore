@@ -7,3 +7,4 @@ liclipse_*.tar.gz
 microsoft.asc
 debian-live/config/includes.chroot/etc/apt/trusted.gpg.d
 *.iso
+eclipse.tgz
