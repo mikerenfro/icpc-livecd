@@ -2,6 +2,7 @@
 set -e
 
 # VS Code
+apt-get install wget
 echo "code code/add-microsoft-repo boolean true" | debconf-set-selections
 wget https://vscode.download.prss.microsoft.com/dbazure/download/stable/03c265b1adee71ac88f833e065f7bb956b60550a/code_1.105.0-1759933565_amd64.deb
 apt-get install ./code_1.105.0-1759933565_amd64.deb
