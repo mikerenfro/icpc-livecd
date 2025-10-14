@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-# VS Code (after GPG key is installed)
-echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list
-apt-get -y update
-apt-get -y install code
+# VS Code
+echo "code code/add-microsoft-repo boolean true" | debconf-set-selections
+wget https://vscode.download.prss.microsoft.com/dbazure/download/stable/03c265b1adee71ac88f833e065f7bb956b60550a/code_1.105.0-1759933565_amd64.deb
+apt-get install ./code_1.105.0-1759933565_amd64.deb
