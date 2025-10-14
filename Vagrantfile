@@ -13,6 +13,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", privileged: false, inline: <<-UNPRIVSHELL
     git clone https://github.com/mikerenfro/icpc-livecd.git
     cd icpc-livecd
+    git branch 2025
     sudo ./build.sh
     sudo mv -v /root/icpc/live-image-amd64.hybrid.iso \
       /vagrant/icpc-livecd-without-internet-amd64.hybrid.iso
