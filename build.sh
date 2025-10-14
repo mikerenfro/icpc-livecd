@@ -48,7 +48,7 @@ fi
 # Preparations
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
 lb config \
-    --distribution bookworm \
+    --distribution trixie \
     --apt-recommends false \
     --bootappend-live "boot=live components quiet splash noroot toram nouveau.modeset=0" \
     --bootappend-live-failsafe "boot=live components memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=788 noroot toram"

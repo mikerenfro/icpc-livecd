@@ -4,12 +4,12 @@ openssh-server
 task-xfce-desktop
 emacs
 vim
-gcc-11
-g++-11
+gcc-14
+g++-14
 make
 libc6-dev
 dpkg-dev
-openjdk-17-jdk
+openjdk-21-jdk
 pypy3
 user-setup
 firefox-esr
