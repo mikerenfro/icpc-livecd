@@ -9,7 +9,7 @@ PYCHARM_RELEASE=2024.2.4
 PYCHARM_URL=https://download.jetbrains.com/python/pycharm-community-${PYCHARM_RELEASE}.tar.gz
 # Dependencies
 sudo apt-get update
-sudo apt-get -y install live-build live-boot-doc live-config-doc zstd
+sudo apt-get -y install gpg live-build live-boot-doc live-config-doc zstd
 
 # IDE staging
 # for U in ${PYCHARM_URL}; do
