@@ -35,11 +35,11 @@ sudo apt-get -y install gpg live-build live-boot-doc live-config-doc zstd
 #     echo "PyCharm already extracted, skipping"
 # fi
 
-# # VS Code staging
-# wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft.asc
-# TRUSTED_GPG_DIR=debian-live/config/includes.chroot/etc/apt/trusted.gpg.d
-# mkdir -p ${TRUSTED_GPG_DIR}
-# gpg --dearmor < microsoft.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
+# VS Code staging
+wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft.asc
+TRUSTED_GPG_DIR=debian-live/config/includes.chroot/etc/apt/trusted.gpg.d
+mkdir -p ${TRUSTED_GPG_DIR}
+gpg --dearmor < microsoft.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
 
 if [ "$1" == "allow-internet" ]; then
     mv debian-live/config/includes.chroot/etc/environment debian-live/config/includes.chroot/etc/_environment
