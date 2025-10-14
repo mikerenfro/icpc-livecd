@@ -12,34 +12,34 @@ sudo apt-get update
 sudo apt-get -y install live-build live-boot-doc live-config-doc zstd
 
 # IDE staging
-for U in ${PYCHARM_URL}; do
-    wget -q --mirror --no-directories --progress=bar:force:noscroll ${U}
-done
+# for U in ${PYCHARM_URL}; do
+#     wget -q --mirror --no-directories --progress=bar:force:noscroll ${U}
+# done
 
-ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
-if [ ! -d ${ECLIPSE_DIR} ]; then
-    echo "Extracting Eclipse"
-    mkdir -p ${ECLIPSE_DIR}
-    tar --strip-components=1 -C ${ECLIPSE_DIR} \
-        -zxf eclipse.tgz
-else
-   echo "Eclipse already extracted, skipping"
-fi
-PYCHARM_DIR=${PWD}/debian-live/config/includes.chroot/opt/pycharm
-if [ ! -d ${PYCHARM_DIR} ]; then
-    echo "Extracting PyCharm"
-    mkdir -p ${PYCHARM_DIR}
-    tar --strip-components=1 -C ${PYCHARM_DIR} \
-        -zxf $(basename ${PYCHARM_URL})
-else
-    echo "PyCharm already extracted, skipping"
-fi
+# ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
+# if [ ! -d ${ECLIPSE_DIR} ]; then
+#     echo "Extracting Eclipse"
+#     mkdir -p ${ECLIPSE_DIR}
+#     tar --strip-components=1 -C ${ECLIPSE_DIR} \
+#         -zxf eclipse.tgz
+# else
+#    echo "Eclipse already extracted, skipping"
+# fi
+# PYCHARM_DIR=${PWD}/debian-live/config/includes.chroot/opt/pycharm
+# if [ ! -d ${PYCHARM_DIR} ]; then
+#     echo "Extracting PyCharm"
+#     mkdir -p ${PYCHARM_DIR}
+#     tar --strip-components=1 -C ${PYCHARM_DIR} \
+#         -zxf $(basename ${PYCHARM_URL})
+# else
+#     echo "PyCharm already extracted, skipping"
+# fi
 
-# VS Code staging
-wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft.asc
-TRUSTED_GPG_DIR=debian-live/config/includes.chroot/etc/apt/trusted.gpg.d
-mkdir -p ${TRUSTED_GPG_DIR}
-gpg --dearmor < microsoft.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
+# # VS Code staging
+# wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft.asc
+# TRUSTED_GPG_DIR=debian-live/config/includes.chroot/etc/apt/trusted.gpg.d
+# mkdir -p ${TRUSTED_GPG_DIR}
+# gpg --dearmor < microsoft.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
 
 if [ "$1" == "allow-internet" ]; then
     mv debian-live/config/includes.chroot/etc/environment debian-live/config/includes.chroot/etc/_environment
