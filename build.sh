@@ -36,10 +36,10 @@ sudo apt-get -y install gpg live-build live-boot-doc live-config-doc zstd
 # fi
 
 # VS Code staging
-wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft.asc
+wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft-2025.asc
 TRUSTED_GPG_DIR=debian-live/config/includes.chroot/etc/apt/trusted.gpg.d
 mkdir -p ${TRUSTED_GPG_DIR}
-gpg --dearmor < microsoft.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
+gpg --dearmor < microsoft-2025.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
 
 if [ "$1" == "allow-internet" ]; then
     mv debian-live/config/includes.chroot/etc/environment debian-live/config/includes.chroot/etc/_environment
