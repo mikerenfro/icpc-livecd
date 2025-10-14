@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "bento/debian-12"
+  config.vm.box = "bento/debian-13"
   config.vm.provider "virtualbox" do |vb|
     vb.cpus = "4"
     vb.memory = "4096"
