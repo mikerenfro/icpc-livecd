@@ -57,10 +57,10 @@
         <h2>Java</h2>
 
         <h3>Compile</h3>
-        <p><code>javac -encoding UTF-8 -sourcepath . -cp ./* -d . program.java</code></p>
+        <p><code>javac -encoding UTF-8 -sourcepath . -cp ./*.class -d . program.java</code></p>
 
         <h3>Build</h3>
-        <p><code>java -Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms{memlim}m -Xmx{memlim}m -cp .:./* program</code>
+        <p><code>java -Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms{memlim}m -Xmx{memlim}m -cp .:./*.class program</code>
         where <code>{memlim}</code> is the designated memory limit for the particular problem.</p>
 
         <h2>Python 3</h2>
