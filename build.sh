@@ -21,7 +21,7 @@ if [ ! -d ${ECLIPSE_DIR} ]; then
     echo "Extracting Eclipse"
     mkdir -p ${ECLIPSE_DIR}
     cp /vagrant/eclipse.tgz ${ECLIPSE_DIR}/..
-    tar --strip-components=1 -C ${ECLIPSE_DIR}/.. \
+    tar --strip-components=1 -C ${ECLIPSE_DIR} \
         -zxf /vagrant/eclipse.tgz
 else
    echo "Eclipse already extracted, skipping"
