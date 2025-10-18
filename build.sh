@@ -16,15 +16,16 @@ sudo apt-get -y install gpg live-build live-boot-doc live-config-doc zstd
 #     wget -q --mirror --no-directories --progress=bar:force:noscroll ${U}
 # done
 
-# ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
-# if [ ! -d ${ECLIPSE_DIR} ]; then
-#     echo "Extracting Eclipse"
-#     mkdir -p ${ECLIPSE_DIR}
-#     tar --strip-components=1 -C ${ECLIPSE_DIR} \
-#         -zxf eclipse.tgz
-# else
-#    echo "Eclipse already extracted, skipping"
-# fi
+ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
+if [ ! -d ${ECLIPSE_DIR} ]; then
+    echo "Extracting Eclipse"
+    mkdir -p ${ECLIPSE_DIR}
+    cp /vagrant/eclipse.tgz ${ECLIPSE_DIR}/..
+    tar --strip-components=1 -C ${ECLIPSE_DIR}/.. \
+        -zxf /vagrant/eclipse.tgz
+else
+   echo "Eclipse already extracted, skipping"
+fi
 # PYCHARM_DIR=${PWD}/debian-live/config/includes.chroot/opt/pycharm
 # if [ ! -d ${PYCHARM_DIR} ]; then
 #     echo "Extracting PyCharm"
