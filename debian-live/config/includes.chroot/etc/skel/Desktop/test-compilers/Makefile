@@ -1,11 +1,11 @@
 CC=gcc
-CFLAGS=-x c -g -O2 -std=gnu11 -static -lm
+CFLAGS=-g -O2 -std=gnu23 -static -lm
 CXX=g++
-CXXFLAGS=-x c++ -g -O2 -std=gnu++20 -static
+CXXFLAGS=-g -O2 -std=gnu++23 -static -lrt -Wl,--whole-archive -lpthread -Wl,--no-whole-archive
 JAVAC=javac
-JAVACFLAGS=-encoding UTF-8 -sourcepath . -d .
+JAVACFLAGS=-encoding UTF-8 -sourcepath . -cp ./* -d .
 JAVA=java
-JAVAFLAGS=-Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms1920m -Xmx1920m
+JAVAFLAGS=-Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms1920m -Xmx1920m -cp .:./*
 PY3=pypy3
 
 all: hw_icpc_c hw_icpc_cpp hw_icpc_java.class leggjasaman_c leggjasaman_cpp leggjasaman_java.class

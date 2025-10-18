@@ -14,10 +14,10 @@
         </p>
         <h1>Languages Supported</h1>
         <ul>
-            <li>C (using gcc 11.3.0)</li>
-            <li>C++ (using g++ 11.3.0)</li>
-            <li>Java (using OpenJDK 17.0.13)</li>
-            <li>Python 3 (using PyPy 7.3.11 for Python 3.9.16)</li>
+            <li>C (using gcc 14.2.0)</li>
+            <li>C++ (using g++ 14.2.0)</li>
+            <li>Java (using OpenJDK 21.0.8)</li>
+            <li>Python 3 (using PyPy 7.3.19 for Python 3.11.11)</li>
         </ul>
         <h1>IDEs / Text Editors Provided</h1>
         <p><b>All IDEs and text editors are provided AS IS, with no PRE-CONFIGURATION.
@@ -41,7 +41,7 @@
         <h2>C</h2>
 
         <h3>Compile</h3>
-        <p><code>gcc -x c -g -O2 -std=gnu11 -static -o program program.c -lm</code></p>
+        <p><code>gcc -g -O2 -std=gnu23 -static -lm -o program program.c</code></p>
 
         <h3>Build</h3>
         <p><code>./program</code></p>
@@ -49,7 +49,7 @@
         <h2>C++</h2>
 
         <h3>Compile</h3>
-        <p><code>g++ -x c++ -g -O2 -std=gnu++17 -static -o program program.cpp</code></p>
+        <p><code>g++ -g -O2 -std=gnu++23 -static -lrt -Wl,--whole-archive -lpthread -Wl,--no-whole-archive -o program program.cpp</code></p>
 
         <h3>Build</h3>
         <p><code>./program</code></p>
@@ -57,7 +57,7 @@
         <h2>Java</h2>
 
         <h3>Compile</h3>
-        <p><code>javac -encoding UTF-8 -sourcepath . -d . program.java</code></p>
+        <p><code>javac -encoding UTF-8 -sourcepath . -cp ./* -d . program.java</code></p>
 
         <h3>Build</h3>
         <p><code>java -Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms{memlim}m -Xmx{memlim}m -cp .:./* program</code>
