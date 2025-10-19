@@ -3,5 +3,5 @@ Version=1.0
 Type=Application
 Name=Eclipse C++
 Comment=
-Icon=applications-development
-Exec=/opt/eclipse/cpp/eclipse
+Icon=/home/user/eclipse/cpp-2025-09/eclipse/icon.xpm
+Exec=/home/user/eclipse/cpp-2025-09/eclipse/eclipse
