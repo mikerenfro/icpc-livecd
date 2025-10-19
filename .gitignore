@@ -6,5 +6,6 @@ pycharm-*.tar.gz
 liclipse_*.tar.gz
 microsoft.asc
 debian-live/config/includes.chroot/etc/apt/trusted.gpg.d
+debian-live/config/includes.chroot/opt/*
 *.iso
 eclipse.tgz
