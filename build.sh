@@ -65,7 +65,7 @@ lb config \
 echo "Syncing debian-live/config contents"
 rsync -a ${OLDPWD}/debian-live/config/ config/
 
-lb build
+sudo lb build
 
 popd
 
