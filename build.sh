@@ -26,15 +26,15 @@ if [ ! -d ${ECLIPSE_DIR} ]; then
 else
    echo "Eclipse already extracted, skipping"
 fi
-# PYCHARM_DIR=${PWD}/debian-live/config/includes.chroot/opt/pycharm
-# if [ ! -d ${PYCHARM_DIR} ]; then
-#     echo "Extracting PyCharm"
-#     mkdir -p ${PYCHARM_DIR}
-#     tar --strip-components=1 -C ${PYCHARM_DIR} \
-#         -zxf $(basename ${PYCHARM_URL})
-# else
-#     echo "PyCharm already extracted, skipping"
-# fi
+PYCHARM_DIR=${PWD}/debian-live/config/includes.chroot/opt/pycharm
+if [ ! -d ${PYCHARM_DIR} ]; then
+    echo "Extracting PyCharm"
+    mkdir -p ${PYCHARM_DIR}
+    tar --strip-components=1 -C ${PYCHARM_DIR} \
+        -zxf $(basename ${PYCHARM_URL})
+else
+    echo "PyCharm already extracted, skipping"
+fi
 
 # VS Code staging
 wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft-2025.asc
