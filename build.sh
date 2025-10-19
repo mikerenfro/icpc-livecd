@@ -2,7 +2,11 @@
 set -e
 
 WORKDIR=~/icpc
-PYCHARM_RELEASE=2024.2.4
+ECLIPSE_RELEASE=2025-09
+ECLIPSE_LANGUAGES="cpp java"
+ECLIPSE_MIRROR=mirror.umd.edu
+LICLIPSE_RELEASE=12.0.1
+PYCHARM_RELEASE=2024.2.3
 
 # Hopefully nothing to change below this line
 
@@ -17,34 +21,29 @@ sudo apt-get -y install gpg live-build live-boot-doc live-config-doc zstd
 # done
 
 ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
-if [ ! -d ${ECLIPSE_DIR} ]; then
+for language in ${ECLIPSE_LANGUAGES}; do
+    echo "Downloading Eclipse"
+    mkdir -p ${ECLIPSE_DIR}/${language}
+    tarball=eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
+    url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/${tarball}
+    wget --progress=dot:giga --no-clobber ${url}
     echo "Extracting Eclipse"
-    mkdir -p ${ECLIPSE_DIR}
-    cp /vagrant/eclipse.tgz ${ECLIPSE_DIR}/..
-    tar -C ${ECLIPSE_DIR}/.. \
-        -zxf /vagrant/eclipse.tgz
-else
-   echo "Eclipse already extracted, skipping"
-fi
-PYCHARM_DIR=${PWD}/debian-live/config/includes.chroot/opt/pycharm
-if [ ! -d ${PYCHARM_DIR} ]; then
-    echo "Extracting PyCharm"
-    mkdir -p ${PYCHARM_DIR}
-    tar --strip-components=1 -C ${PYCHARM_DIR} \
-        -zxf /vagrant/pycharm-2025.2.3.tar.gz
-else
-    echo "PyCharm already extracted, skipping"
-fi
+    tar -zxf ${tarball} --strip-components=1 -C ${ECLIPSE_DIR}/${language}
+done
 
+# https://download-cdn.jetbrains.com/python/pycharm-2025.2.3.tar.gz
+PYCHARM_DIR=${PWD}/debian-live/config/includes.chroot/opt/pycharm
+echo "Extracting PyCharm"
+mkdir -p ${PYCHARM_DIR}
+tar --strip-components=1 -C ${PYCHARM_DIR} \
+    -zxf /vagrant/pycharm-2025.2.3.tar.gz
+
+# https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_12.0.1_linux.gtk.x86_64.tar.gz
 LICLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/liclipse
-if [ ! -d ${LICLIPSE_DIR} ]; then
-    echo "Extracting PyCharm"
-    mkdir -p ${LICLIPSE_DIR}
-    tar --strip-components=1 -C ${LICLIPSE_DIR} \
-        -zxf /vagrant/liclipse_12.0.1_linux.gtk.x86_64.tar.gz
-else
-    echo "PyCharm already extracted, skipping"
-fi
+echo "Extracting LiClipse"
+mkdir -p ${LICLIPSE_DIR}
+tar --strip-components=1 -C ${LICLIPSE_DIR} \
+    -zxf /vagrant/liclipse_12.0.1_linux.gtk.x86_64.tar.gz
 
 # VS Code staging
 wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft-2025.asc
