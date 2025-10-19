@@ -22,12 +22,12 @@ sudo apt-get -y install gpg live-build live-boot-doc live-config-doc zstd
 
 ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
 for language in ${ECLIPSE_LANGUAGES}; do
-    echo "Downloading Eclipse"
+    echo "Downloading Eclipse ${language}"
     mkdir -p ${ECLIPSE_DIR}/${language}
     tarball=eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
     url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/${tarball}
     wget --progress=dot:giga --no-clobber ${url}
-    echo "Extracting Eclipse"
+    echo "Extracting Eclipse ${language}"
     tar -zxf ${tarball} --strip-components=1 -C ${ECLIPSE_DIR}/${language}
 done
 
