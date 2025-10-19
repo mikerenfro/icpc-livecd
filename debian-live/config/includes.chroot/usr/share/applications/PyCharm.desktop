@@ -3,5 +3,5 @@ Version=1.0
 Type=Application
 Name=PyCharm
 Comment=
-Icon=applications-development
+Icon=/opt/pycharm/bin/pycharm.png
 Exec=/opt/pycharm/bin/pycharm.sh
