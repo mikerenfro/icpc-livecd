@@ -31,7 +31,17 @@ if [ ! -d ${PYCHARM_DIR} ]; then
     echo "Extracting PyCharm"
     mkdir -p ${PYCHARM_DIR}
     tar --strip-components=1 -C ${PYCHARM_DIR} \
-        -zxf $(basename ${PYCHARM_URL})
+        -zxf /vagrant/pycharm-2025.2.3.tar.gz
+else
+    echo "PyCharm already extracted, skipping"
+fi
+
+LICLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/liclipse
+if [ ! -d ${LICLIPSE_DIR} ]; then
+    echo "Extracting PyCharm"
+    mkdir -p ${LICLIPSE_DIR}
+    tar --strip-components=1 -C ${LICLIPSE_DIR} \
+        -zxf /vagrant/liclipse_12.0.1_linux.gtk.x86_64.tar.gz
 else
     echo "PyCharm already extracted, skipping"
 fi
