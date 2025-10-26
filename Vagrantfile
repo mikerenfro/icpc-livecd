@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
     cd icpc-livecd
     git checkout 2025
     ./build.sh
-    mv -v ~/icpc-live-image-without-internet-amd64.hybrid.iso \
+    mv -v ~/icpc-livecd-without-internet-amd64.hybrid.iso \
       /vagrant/
     sudo rm -rf ~/icpc/
     ./build.sh allow-internet
