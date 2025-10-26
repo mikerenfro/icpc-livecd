@@ -28,7 +28,6 @@ done
 
 ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
 for language in ${ECLIPSE_LANGUAGES}; do
-    echo "Extracting Eclipse ${language}"
     mkdir -p ${ECLIPSE_DIR}/${language}
     tarball=${PWD}/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
     echo "Extracting Eclipse ${language}"
