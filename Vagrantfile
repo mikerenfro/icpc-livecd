@@ -16,11 +16,11 @@ Vagrant.configure("2") do |config|
     cd icpc-livecd
     git checkout 2025
     ./build.sh
-    mv -v ~/icpc/live-image-amd64.hybrid.iso \
-      /vagrant/icpc-livecd-without-internet-amd64.hybrid.iso
+    mv -v ~/icpc-live-image-without-internet-amd64.hybrid.iso \
+      /vagrant/
     sudo rm -rf ~/icpc/
     ./build.sh allow-internet
-    mv -v ~/icpc/live-image-amd64.hybrid.iso \
-      /vagrant/icpc-livecd-with-internet-amd64.hybrid.iso
+    mv -v ~/icpc-livecd-with-internet-amd64.hybrid.iso \
+      /vagrant/
   UNPRIVSHELL
 end
