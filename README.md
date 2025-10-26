@@ -1,5 +1,7 @@
 # A Debian-based LiveCD builder for ICPC
 
+![Demo of working environment for ICPC Live CD](icpc-2025-environment-working.png)
+
 Summary:
 a 64-bit Debian Live installation for the International Collegiate Programming Competition (ICPC).
 
