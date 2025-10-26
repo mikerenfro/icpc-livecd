@@ -67,7 +67,9 @@ lb config \
 echo "Syncing debian-live/config contents"
 rsync -a ${OLDPWD}/debian-live/config/ config/
 
-sudo lb build
+echo "$(date): building live CD"
+sudo lb build >> ~/icpc-build.out 2>&1
+echo "$(date): done"
 
 popd
 
