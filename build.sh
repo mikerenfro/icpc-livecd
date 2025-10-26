@@ -22,8 +22,7 @@ for U in ${PYCHARM_URL} ${LICLIPSE_URL}; do
     ${WGET} --progress=dot:giga --no-clobber ${U}
 done
 for language in ${ECLIPSE_LANGUAGES}; do
-    tarball=${PWD}/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
-    url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/${tarball}
+    url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
     ${WGET} --progress=dot:giga --no-clobber ${url}
 done
 
