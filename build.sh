@@ -6,44 +6,47 @@ ECLIPSE_RELEASE=2025-09
 ECLIPSE_LANGUAGES="cpp java"
 ECLIPSE_MIRROR=mirror.umd.edu
 LICLIPSE_RELEASE=12.0.1
-PYCHARM_RELEASE=2024.2.3
+PYCHARM_RELEASE=2025.2.3
 
 # Hopefully nothing to change below this line
+WGET="wget --progress=dot:giga --no-clobber"
+PYCHARM_URL=https://download-cdn.jetbrains.com/python/pycharm-${PYCHARM_RELEASE}.tar.gz
+LICLIPSE_URL=https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
 
-PYCHARM_URL=https://download.jetbrains.com/python/pycharm-community-${PYCHARM_RELEASE}.tar.gz
 # Dependencies
 sudo apt-get update
 sudo apt-get -y install gpg live-build live-boot-doc live-config-doc zstd
 
 # IDE staging
-# for U in ${PYCHARM_URL}; do
-#     wget -q --mirror --no-directories --progress=bar:force:noscroll ${U}
-# done
+for U in ${PYCHARM_URL} ${LICLIPSE_URL}; do
+    ${WGET} --progress=dot:giga --no-clobber ${U}
+done
+for language in ${ECLIPSE_LANGUAGES}; do
+    url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/${tarball}
+    ${WGET} --progress=dot:giga --no-clobber ${url}
+done
 
 ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
 for language in ${ECLIPSE_LANGUAGES}; do
     echo "Downloading Eclipse ${language}"
     mkdir -p ${ECLIPSE_DIR}/${language}
-    tarball=eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
+    tarball=${PWD}/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
     url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/${tarball}
-    wget --progress=dot:giga --no-clobber ${url}
     echo "Extracting Eclipse ${language}"
     tar -zxf ${tarball} --strip-components=1 -C ${ECLIPSE_DIR}/${language}
 done
 
-# https://download-cdn.jetbrains.com/python/pycharm-2025.2.3.tar.gz
 PYCHARM_DIR=${PWD}/debian-live/config/includes.chroot/opt/pycharm
 echo "Extracting PyCharm"
 mkdir -p ${PYCHARM_DIR}
 tar --strip-components=1 -C ${PYCHARM_DIR} \
-    -zxf /vagrant/pycharm-2025.2.3.tar.gz
+    -zxf pycharm-${PYCHARM_RELEASE}.tar.gz
 
-# https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_12.0.1_linux.gtk.x86_64.tar.gz
 LICLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/liclipse
 echo "Extracting LiClipse"
 mkdir -p ${LICLIPSE_DIR}
 tar --strip-components=1 -C ${LICLIPSE_DIR} \
-    -zxf /vagrant/liclipse_12.0.1_linux.gtk.x86_64.tar.gz
+    -zxf /vagrant/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
 
 # VS Code staging
 wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft-2025.asc
