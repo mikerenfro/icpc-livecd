@@ -3,5 +3,5 @@ Version=1.0
 Type=Application
 Name=Visual Studio Code
 Comment=
-Icon=applications-development
+Icon=vscode
 Exec=/usr/bin/code

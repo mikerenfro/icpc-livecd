@@ -3,5 +3,5 @@ Version=1.0
 Type=Application
 Name=Eclipse Java
 Comment=
-Icon=applications-development
+Icon=/opt/eclipse/java/icon.xpm
 Exec=/opt/eclipse/java/eclipse
