@@ -46,7 +46,7 @@ LICLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/liclipse
 echo "Extracting LiClipse"
 mkdir -p ${LICLIPSE_DIR}
 tar --strip-components=1 -C ${LICLIPSE_DIR} \
-    -zxf /vagrant/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
+    -zxf ${PWD}/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
 
 # VS Code staging
 wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft-2025.asc
