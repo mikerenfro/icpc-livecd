@@ -22,16 +22,16 @@ for U in ${PYCHARM_URL} ${LICLIPSE_URL}; do
     ${WGET} --progress=dot:giga --no-clobber ${U}
 done
 for language in ${ECLIPSE_LANGUAGES}; do
+    tarball=${PWD}/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
     url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/${tarball}
     ${WGET} --progress=dot:giga --no-clobber ${url}
 done
 
 ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
 for language in ${ECLIPSE_LANGUAGES}; do
-    echo "Downloading Eclipse ${language}"
+    echo "Extracting Eclipse ${language}"
     mkdir -p ${ECLIPSE_DIR}/${language}
     tarball=${PWD}/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
-    url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/${tarball}
     echo "Extracting Eclipse ${language}"
     tar -zxf ${tarball} --strip-components=1 -C ${ECLIPSE_DIR}/${language}
 done
