@@ -9,7 +9,7 @@ g++-14
 make
 libc6-dev
 dpkg-dev
-openjdk-21-jdk
+openjdk-25-jdk
 pypy3
 user-setup
 firefox-esr
