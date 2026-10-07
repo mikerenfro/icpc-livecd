@@ -2,15 +2,15 @@
 set -e
 
 WORKDIR=~/icpc
-ECLIPSE_RELEASE=2025-09
+ECLIPSE_RELEASE=2026-09
 ECLIPSE_LANGUAGES="cpp java"
 ECLIPSE_MIRROR=mirror.umd.edu
 LICLIPSE_RELEASE=12.0.1
-PYCHARM_RELEASE=2025.2.3
+PYCHARM_RELEASE=2026.2.3
 
 # Hopefully nothing to change below this line
 WGET="wget --progress=dot:giga --no-clobber"
-PYCHARM_URL=https://download-cdn.jetbrains.com/python/pycharm-${PYCHARM_RELEASE}.tar.gz
+PYCHARM_URL=https://download.jetbrains.com/python/pycharm-${PYCHARM_RELEASE}.tar.gz
 LICLIPSE_URL=https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
 
 # Dependencies
