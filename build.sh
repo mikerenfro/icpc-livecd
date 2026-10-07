@@ -1,6 +1,54 @@
 #!/bin/bash
 set -e
 
+function install_eclipse() {
+    for language in ${ECLIPSE_LANGUAGES}; do
+        url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
+        ${WGET} --progress=dot:giga --no-clobber ${url}
+    done
+
+    ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
+    for language in ${ECLIPSE_LANGUAGES}; do
+        mkdir -p ${ECLIPSE_DIR}/${language}
+        tarball=${PWD}/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
+        echo "Extracting Eclipse ${language}"
+        tar -zxf ${tarball} --strip-components=1 -C ${ECLIPSE_DIR}/${language}
+        case ${language} in
+            cpp) shortcut="Eclipse-C++";;
+            java) shortcut="Eclipse-Java";;
+        esac
+        cp ${PWD}/applications/${shortcut}.desktop ${PWD}/debian-live/config/includes.chroot/usr/share/applications/
+    done
+}
+
+function install_liclipse() {
+    ${WGET} ${LICLIPSE_URL}
+    LICLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/liclipse
+    echo "Extracting LiClipse"
+    mkdir -p ${LICLIPSE_DIR}
+    tar --strip-components=1 -C ${LICLIPSE_DIR} \
+        -zxf ${PWD}/$(basename ${LICLIPSE_URL})
+    cp ${PWD}/applications/LiClipse.desktop ${PWD}/debian-live/config/includes.chroot/usr/share/applications/
+}
+
+function install_pycharm() {
+    ${WGET} ${PYCHARM_URL}
+    PYCHARM_DIR=${PWD}/debian-live/config/includes.chroot/opt/pycharm
+    echo "Extracting PyCharm"
+    mkdir -p ${PYCHARM_DIR}
+    tar --strip-components=1 -C ${PYCHARM_DIR} \
+        -zxf ${PWD}/$(basename ${PYCHARM_URL})
+    cp ${PWD}/applications/PyCharm.desktop ${PWD}/debian-live/config/includes.chroot/usr/share/applications/
+}
+
+function install_vscode() {
+    wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft-2025.asc
+    TRUSTED_GPG_DIR=${PWD}/debian-live/config/includes.chroot/etc/apt/trusted.gpg.d
+    mkdir -p ${TRUSTED_GPG_DIR}
+    gpg --dearmor < microsoft-2025.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
+    cp ${PWD}/applications/VS-Code.desktop ${PWD}/debian-live/config/includes.chroot/usr/share/applications/
+}
+
 WORKDIR=~/icpc
 ECLIPSE_RELEASE=2026-09
 ECLIPSE_LANGUAGES="cpp java"
@@ -17,40 +65,10 @@ LICLIPSE_URL=https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_${L
 sudo apt-get update
 sudo apt-get -y install gpg live-build live-boot-doc live-config-doc zstd
 
-# IDE staging
-for U in ${PYCHARM_URL} ${LICLIPSE_URL}; do
-    ${WGET} --progress=dot:giga --no-clobber ${U}
-done
-for language in ${ECLIPSE_LANGUAGES}; do
-    url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
-    ${WGET} --progress=dot:giga --no-clobber ${url}
-done
-
-ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
-for language in ${ECLIPSE_LANGUAGES}; do
-    mkdir -p ${ECLIPSE_DIR}/${language}
-    tarball=${PWD}/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
-    echo "Extracting Eclipse ${language}"
-    tar -zxf ${tarball} --strip-components=1 -C ${ECLIPSE_DIR}/${language}
-done
-
-PYCHARM_DIR=${PWD}/debian-live/config/includes.chroot/opt/pycharm
-echo "Extracting PyCharm"
-mkdir -p ${PYCHARM_DIR}
-tar --strip-components=1 -C ${PYCHARM_DIR} \
-    -zxf pycharm-${PYCHARM_RELEASE}.tar.gz
-
-LICLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/liclipse
-echo "Extracting LiClipse"
-mkdir -p ${LICLIPSE_DIR}
-tar --strip-components=1 -C ${LICLIPSE_DIR} \
-    -zxf ${PWD}/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
-
-# VS Code staging
-wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft-2025.asc
-TRUSTED_GPG_DIR=debian-live/config/includes.chroot/etc/apt/trusted.gpg.d
-mkdir -p ${TRUSTED_GPG_DIR}
-gpg --dearmor < microsoft-2025.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
+install_eclipse
+install_liclipse
+install_pycharm
+install_vscode
 
 if [ "$1" == "allow-internet" ]; then
     mv debian-live/config/includes.chroot/etc/environment debian-live/config/includes.chroot/etc/_environment
