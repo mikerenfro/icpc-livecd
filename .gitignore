@@ -4,7 +4,7 @@ eclipse*.gz
 live-image-amd64.hybrid.iso
 pycharm-*.tar.gz
 liclipse_*.tar.gz
-microsoft.asc
+microsoft-2025.asc
 debian-live/config/includes.chroot/etc/apt/trusted.gpg.d
 debian-live/config/includes.chroot/opt/*
 debian-live/config/includes.chroot/usr/share/applications/*.desktop
