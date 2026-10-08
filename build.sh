@@ -1,5 +1,23 @@
 #!/bin/bash
-set -e
+set -Eeuo pipefail
+
+catch_error() {
+    local exit_code=$?
+    local line_number=$1
+    echo "Error occurred on line $line_number with exit code $exit_code" >&2
+    
+    # Perform cleanup actions here (e.g., removing temp files)
+    echo "Restoring /opt, applications, Internet restrictions"
+    rm -rf \
+        ${CHROOT}/opt/{eclipse,liclipse,pycharm} \
+        ${CHROOT}/usr/share/applications/{Eclipse-C++,Eclipse-Java,LiClipse,PyCharm,VS-Code}.desktop
+    if [ "${ALLOW_INTERNET}" == "1" ]; then
+        restore_internet
+    fi
+    exit "$exit_code"
+}
+
+trap 'catch_error $LINENO' ERR
 
 function install_eclipse() {
     for language in ${ECLIPSE_LANGUAGES}; do
@@ -49,6 +67,18 @@ function install_vscode() {
     cp ${PWD}/applications/VS-Code.desktop ${PWD}/debian-live/config/includes.chroot/usr/share/applications/
 }
 
+function allow_internet() {
+    # rename Internet-restricting files out of the way
+    mv ${CHROOT}/etc/environment debian-live/config/includes.chroot/etc/_environment
+    mv ${PWD}/debian-live/config/package-lists/restrict-internet.list.chroot debian-live/config/package-lists/restrict-internet._list.chroot
+}
+
+function forbid_internet() {
+    # Restore names of Internet-restricting files
+    mv ${CHROOT}/etc/_environment debian-live/config/includes.chroot/etc/environment
+    mv debian-live/config/package-lists/restrict-internet._list.chroot debian-live/config/package-lists/restrict-internet.list.chroot
+}
+
 WORKDIR=~/icpc
 ECLIPSE_RELEASE=2026-09
 ECLIPSE_LANGUAGES="cpp java"
@@ -61,6 +91,8 @@ WGET="wget --progress=dot:giga --no-clobber"
 PYCHARM_URL=https://download.jetbrains.com/python/pycharm-${PYCHARM_RELEASE}.tar.gz
 LICLIPSE_URL=https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
 
+CHROOT=${PWD}/debian-live/config/includes.chroot
+
 # Dependencies
 sudo apt-get update
 sudo apt-get -y install gpg live-build live-boot-doc live-config-doc zstd
@@ -71,9 +103,15 @@ install_pycharm
 install_vscode
 
 if [ "$1" == "allow-internet" ]; then
-    mv debian-live/config/includes.chroot/etc/environment debian-live/config/includes.chroot/etc/_environment
-    mv debian-live/config/package-lists/restrict-internet.list.chroot debian-live/config/package-lists/restrict-internet._list.chroot
+    ALLOW_INTERNET=1
+else
+    ALLOW_INTERNET=0
 fi
+
+if [ "${ALLOW_INTERNET}" == "1" ]; then
+    allow_internet
+fi
+
 # Preparations
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
 lb config \
@@ -90,10 +128,9 @@ echo "$(date): done"
 
 popd
 
-if [ "$1" == "allow-internet" ]; then
-    mv debian-live/config/includes.chroot/etc/_environment debian-live/config/includes.chroot/etc/environment
-    mv debian-live/config/package-lists/restrict-internet._list.chroot debian-live/config/package-lists/restrict-internet.list.chroot
+if [ "${ALLOW_INTERNET}" == "1" ]; then
     mv -v ${WORKDIR}/live-image-amd64.hybrid.iso ~/icpc-livecd-with-internet-amd64.hybrid.iso
 else
+    forbid_internet
     mv -v ${WORKDIR}/live-image-amd64.hybrid.iso ~/icpc-livecd-without-internet-amd64.hybrid.iso
 fi
