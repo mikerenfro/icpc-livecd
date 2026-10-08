@@ -12,7 +12,7 @@ catch_error() {
         ${CHROOT}/opt/{eclipse,liclipse,pycharm} \
         ${CHROOT}/usr/share/applications/{Eclipse-C++,Eclipse-Java,LiClipse,PyCharm,VS-Code}.desktop
     if [ "${ALLOW_INTERNET}" == "1" ]; then
-        restore_internet
+        forbid_internet
     fi
     exit "$exit_code"
 }
