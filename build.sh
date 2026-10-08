@@ -8,6 +8,7 @@ catch_error() {
     
     # Perform cleanup actions here (e.g., removing temp files)
     echo "Restoring /opt, applications, Internet restrictions"
+    cd ${STARTDIR}
     rm -rf \
         ${CHROOT}/opt/{eclipse,liclipse,pycharm} \
         ${CHROOT}/usr/share/applications/{Eclipse-C++,Eclipse-Java,LiClipse,PyCharm,VS-Code}.desktop
@@ -79,6 +80,7 @@ function forbid_internet() {
     mv debian-live/config/package-lists/restrict-internet._list.chroot debian-live/config/package-lists/restrict-internet.list.chroot
 }
 
+STARTDIR=${PWD}
 WORKDIR=~/icpc
 ECLIPSE_RELEASE=2026-09
 ECLIPSE_LANGUAGES="cpp java"
