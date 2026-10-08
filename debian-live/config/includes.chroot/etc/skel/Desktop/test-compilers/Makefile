@@ -5,7 +5,8 @@ CXXFLAGS=-g -O2 -std=gnu++23 -static -lrt -Wl,--whole-archive -lpthread -Wl,--no
 JAVAC=javac
 JAVACFLAGS=-encoding UTF-8 -sourcepath . -cp ./*.class -d .
 JAVA=java
-JAVAFLAGS=-Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms1920m -Xmx1920m -cp .:./*.class
+MEMLIM=1920m
+JAVAFLAGS=-Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms$(MEMLIM) -Xmx$(MEMLIM) -cp .:./*.class
 PY3=pypy3
 
 all: hw_icpc_c hw_icpc_cpp hw_icpc_java.class leggjasaman_c leggjasaman_cpp leggjasaman_java.class
