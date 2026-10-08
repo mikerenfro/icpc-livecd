@@ -132,7 +132,7 @@ popd
 
 if [ "${ALLOW_INTERNET}" == "1" ]; then
     mv -v ${WORKDIR}/live-image-amd64.hybrid.iso ~/icpc-livecd-with-internet-amd64.hybrid.iso
-else
     forbid_internet
+else
     mv -v ${WORKDIR}/live-image-amd64.hybrid.iso ~/icpc-livecd-without-internet-amd64.hybrid.iso
 fi
