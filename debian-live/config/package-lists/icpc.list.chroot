@@ -2,6 +2,7 @@ apt-transport-https
 ca-certificates
 openssh-server
 task-xfce-desktop
+fonts-noto-color-emoji
 emacs
 vim
 gcc-14
