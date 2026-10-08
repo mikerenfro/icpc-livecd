@@ -18,7 +18,7 @@ catch_error() {
     exit "$exit_code"
 }
 
-trap 'catch_error $LINENO' ERR
+trap 'catch_error $LINENO' ERR INT
 
 function install_eclipse() {
     for language in ${ECLIPSE_LANGUAGES}; do
