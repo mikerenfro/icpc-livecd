@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=LiClipse
+Comment=
+Icon=/opt/liclipse/icon.xpm
+Exec=/opt/liclipse/LiClipse

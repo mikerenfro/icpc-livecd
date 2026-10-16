@@ -1,6 +1,20 @@
 apt-transport-https
 ca-certificates
-shorewall
 openssh-server
 task-xfce-desktop
-build-essential openjdk-17-jdk python2.7 emacs vim
+emacs
+vim
+gcc-14
+g++-14
+make
+libc6-dev
+dpkg-dev
+openjdk-21-jdk
+pypy3
+user-setup
+firefox-esr
+xfce4-terminal
+zstd
+gdb
+libglib2.0-bin
+libwebkit2gtk-4.1-0
