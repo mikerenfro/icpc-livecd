@@ -70,14 +70,14 @@ function install_vscode() {
 
 function allow_internet() {
     # rename Internet-restricting files out of the way
-    mv ${CHROOT}/etc/environment debian-live/config/includes.chroot/etc/_environment
-    mv ${PWD}/debian-live/config/package-lists/restrict-internet.list.chroot debian-live/config/package-lists/restrict-internet._list.chroot
+    mv ${CHROOT}/etc/{,_}environment
+    mv ${PWD}/debian-live/config/package-lists/restrict-internet.{,_}list.chroot
 }
 
 function forbid_internet() {
     # Restore names of Internet-restricting files
-    mv ${CHROOT}/etc/_environment debian-live/config/includes.chroot/etc/environment
-    mv debian-live/config/package-lists/restrict-internet._list.chroot debian-live/config/package-lists/restrict-internet.list.chroot
+    mv ${CHROOT}/etc/{_,}environment
+    mv ${PWD}/debian-live/config/package-lists/restrict-internet.{_,}list.chroot
 }
 
 STARTDIR=${PWD}
