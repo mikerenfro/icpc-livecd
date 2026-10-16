@@ -1,6 +1,86 @@
 #!/bin/bash
-set -e
+set -Eeuo pipefail
 
+catch_error() {
+    local exit_code=$?
+    local line_number=$1
+    echo "Error occurred on line $line_number with exit code $exit_code" >&2
+    
+    # Perform cleanup actions here (e.g., removing temp files)
+    echo "Restoring /opt, applications, Internet restrictions"
+    cd ${STARTDIR}
+    rm -rf \
+        ${CHROOT}/opt/{eclipse,liclipse,pycharm} \
+        ${CHROOT}/usr/share/applications/{Eclipse-C++,Eclipse-Java,LiClipse,PyCharm,VS-Code}.desktop
+    if [ "${ALLOW_INTERNET}" == "1" ]; then
+        forbid_internet
+    fi
+    exit "$exit_code"
+}
+
+trap 'catch_error $LINENO' ERR INT
+
+function install_eclipse() {
+    for language in ${ECLIPSE_LANGUAGES}; do
+        url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
+        ${WGET} --progress=dot:giga --no-clobber ${url}
+    done
+
+    ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
+    for language in ${ECLIPSE_LANGUAGES}; do
+        mkdir -p ${ECLIPSE_DIR}/${language}
+        tarball=${PWD}/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
+        echo "Extracting Eclipse ${language}"
+        tar -zxf ${tarball} --strip-components=1 -C ${ECLIPSE_DIR}/${language}
+        case ${language} in
+            cpp) shortcut="Eclipse-C++";;
+            java) shortcut="Eclipse-Java";;
+        esac
+        cp ${PWD}/applications/${shortcut}.desktop ${PWD}/debian-live/config/includes.chroot/usr/share/applications/
+    done
+}
+
+function install_liclipse() {
+    ${WGET} ${LICLIPSE_URL}
+    LICLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/liclipse
+    echo "Extracting LiClipse"
+    mkdir -p ${LICLIPSE_DIR}
+    tar --strip-components=1 -C ${LICLIPSE_DIR} \
+        -zxf ${PWD}/$(basename ${LICLIPSE_URL})
+    cp ${PWD}/applications/LiClipse.desktop ${PWD}/debian-live/config/includes.chroot/usr/share/applications/
+}
+
+function install_pycharm() {
+    ${WGET} ${PYCHARM_URL}
+    PYCHARM_DIR=${PWD}/debian-live/config/includes.chroot/opt/pycharm
+    echo "Extracting PyCharm"
+    mkdir -p ${PYCHARM_DIR}
+    tar --strip-components=1 -C ${PYCHARM_DIR} \
+        -zxf ${PWD}/$(basename ${PYCHARM_URL})
+    cp ${PWD}/applications/PyCharm.desktop ${PWD}/debian-live/config/includes.chroot/usr/share/applications/
+}
+
+function install_vscode() {
+    wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft-2025.asc
+    TRUSTED_GPG_DIR=${PWD}/debian-live/config/includes.chroot/etc/apt/trusted.gpg.d
+    mkdir -p ${TRUSTED_GPG_DIR}
+    gpg --dearmor < microsoft-2025.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
+    cp ${PWD}/applications/VS-Code.desktop ${PWD}/debian-live/config/includes.chroot/usr/share/applications/
+}
+
+function allow_internet() {
+    # rename Internet-restricting files out of the way
+    mv ${CHROOT}/etc/environment debian-live/config/includes.chroot/etc/_environment
+    mv ${PWD}/debian-live/config/package-lists/restrict-internet.list.chroot debian-live/config/package-lists/restrict-internet._list.chroot
+}
+
+function forbid_internet() {
+    # Restore names of Internet-restricting files
+    mv ${CHROOT}/etc/_environment debian-live/config/includes.chroot/etc/environment
+    mv debian-live/config/package-lists/restrict-internet._list.chroot debian-live/config/package-lists/restrict-internet.list.chroot
+}
+
+STARTDIR=${PWD}
 WORKDIR=~/icpc
 ECLIPSE_RELEASE=2026-09
 ECLIPSE_LANGUAGES="cpp java"
@@ -13,49 +93,27 @@ WGET="wget --progress=dot:giga --no-clobber"
 PYCHARM_URL=https://download.jetbrains.com/python/pycharm-${PYCHARM_RELEASE}.tar.gz
 LICLIPSE_URL=https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
 
+CHROOT=${PWD}/debian-live/config/includes.chroot
+
 # Dependencies
 sudo apt-get update
 sudo apt-get -y install gpg live-build live-boot-doc live-config-doc zstd
 
-# IDE staging
-for U in ${PYCHARM_URL} ${LICLIPSE_URL}; do
-    ${WGET} --progress=dot:giga --no-clobber ${U}
-done
-for language in ${ECLIPSE_LANGUAGES}; do
-    url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
-    ${WGET} --progress=dot:giga --no-clobber ${url}
-done
-
-ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
-for language in ${ECLIPSE_LANGUAGES}; do
-    mkdir -p ${ECLIPSE_DIR}/${language}
-    tarball=${PWD}/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
-    echo "Extracting Eclipse ${language}"
-    tar -zxf ${tarball} --strip-components=1 -C ${ECLIPSE_DIR}/${language}
-done
-
-PYCHARM_DIR=${PWD}/debian-live/config/includes.chroot/opt/pycharm
-echo "Extracting PyCharm"
-mkdir -p ${PYCHARM_DIR}
-tar --strip-components=1 -C ${PYCHARM_DIR} \
-    -zxf pycharm-${PYCHARM_RELEASE}.tar.gz
-
-LICLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/liclipse
-echo "Extracting LiClipse"
-mkdir -p ${LICLIPSE_DIR}
-tar --strip-components=1 -C ${LICLIPSE_DIR} \
-    -zxf ${PWD}/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
-
-# VS Code staging
-wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft-2025.asc
-TRUSTED_GPG_DIR=debian-live/config/includes.chroot/etc/apt/trusted.gpg.d
-mkdir -p ${TRUSTED_GPG_DIR}
-gpg --dearmor < microsoft-2025.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
+install_eclipse
+install_liclipse
+install_pycharm
+install_vscode
 
 if [ "$1" == "allow-internet" ]; then
-    mv debian-live/config/includes.chroot/etc/environment debian-live/config/includes.chroot/etc/_environment
-    mv debian-live/config/package-lists/restrict-internet.list.chroot debian-live/config/package-lists/restrict-internet._list.chroot
+    ALLOW_INTERNET=1
+else
+    ALLOW_INTERNET=0
 fi
+
+if [ "${ALLOW_INTERNET}" == "1" ]; then
+    allow_internet
+fi
+
 # Preparations
 mkdir -p ${WORKDIR} && pushd ${WORKDIR}
 lb config \
@@ -72,10 +130,9 @@ echo "$(date): done"
 
 popd
 
-if [ "$1" == "allow-internet" ]; then
-    mv debian-live/config/includes.chroot/etc/_environment debian-live/config/includes.chroot/etc/environment
-    mv debian-live/config/package-lists/restrict-internet._list.chroot debian-live/config/package-lists/restrict-internet.list.chroot
+if [ "${ALLOW_INTERNET}" == "1" ]; then
     mv -v ${WORKDIR}/live-image-amd64.hybrid.iso ~/icpc-livecd-with-internet-amd64.hybrid.iso
+    forbid_internet
 else
     mv -v ${WORKDIR}/live-image-amd64.hybrid.iso ~/icpc-livecd-without-internet-amd64.hybrid.iso
 fi

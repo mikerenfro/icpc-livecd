@@ -1,3 +1,5 @@
 #!/bin/bash
 set -e
-chown -R 1000:1000 /opt/pycharm
+if [ -d /opt/pycharm ]; then
+    chown -R 1000:1000 /opt/pycharm
+fi
