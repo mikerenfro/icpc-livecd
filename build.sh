@@ -158,6 +158,9 @@ install_pycharm
 install_vscode
 echo "done."
 
+echo "Copying README markdown content"
+cp -a ${STARTDIR}/team-readme-files ${CHROOT}/opt/
+
 echo "$(date): building live CD"
 sudo lb build >> ~/icpc-build.out 2>&1
 echo "$(date): done"
