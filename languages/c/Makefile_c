@@ -1,6 +1,9 @@
 CC=gcc
 CFLAGS=-g -O2 -std=gnu23 -static -lm
 
+%: %.c
+	$(CC) $(CFLAGS) -o $@ $^
+
 all: hw_icpc leggjasaman
 	@echo "# Hello, World in C"
 	./hw_icpc
