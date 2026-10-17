@@ -6,7 +6,7 @@ function get_debian_package_version() {
 }
 
 function modify_team_readme() {
-    README=/etc/skel/Desktop/test-compilers/README.html
+    README=/etc/skel/Desktop/README.html
     MAKEFILE=/etc/skel/Desktop/test-compilers/Makefile
     GCC_VERSION=$(get_debian_package_version gcc-14)
     GPP_VERSION=$(get_debian_package_version g++-14)
