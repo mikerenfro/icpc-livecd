@@ -14,7 +14,7 @@ catch_error() {
 trap 'catch_error $LINENO' ERR INT
 
 function install_eclipse() {
-    echo -ne "Eclipse "
+    echo -ne "- Eclipse "
     (cd ${STARTDIR}
     for language in ${ECLIPSE_LANGUAGES}; do
         url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
@@ -33,10 +33,11 @@ function install_eclipse() {
         esac
         cp ${STARTDIR}/applications/${shortcut}.desktop ${CHROOT}/usr/share/applications/
     done
+    echo ""
 }
 
 function install_liclipse() {
-    echo -ne "Liclipse "
+    echo "- Liclipse"
     (cd ${STARTDIR} && ${WGET} ${LICLIPSE_URL})
     LICLIPSE_DIR=${CHROOT}/opt/liclipse
     mkdir -p ${LICLIPSE_DIR}
@@ -46,7 +47,7 @@ function install_liclipse() {
 }
 
 function install_pycharm() {
-    echo -ne "Pycharm "
+    echo "- Pycharm"
     (cd ${STARTDIR} && ${WGET} ${PYCHARM_URL})
     PYCHARM_DIR=${CHROOT}/opt/pycharm
     mkdir -p ${PYCHARM_DIR}
@@ -56,7 +57,7 @@ function install_pycharm() {
 }
 
 function install_vscode() {
-    echo -ne "VS Code "
+    echo "- VS Code"
     (cd ${STARTDIR}
     wget -q --mirror --no-directories https://packages.microsoft.com/keys/microsoft-2025.asc
     )
