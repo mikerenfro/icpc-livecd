@@ -76,7 +76,9 @@ function forbid_internet() {
     # Ensure Internet-restricting files exist in ${CHROOT}
     echo "Restricting Internet access via /etc/{environment,shorewall}"
     cp ${STARTDIR}/internet-restrictions/environment ${CHROOT}/etc/
+    perl -pi.bak -e "s/__SQUID_IP__/${SQUID_IP}/g" ${CHROOT}/etc/environment
     cp -a ${STARTDIR}/internet-restrictions/shorewall ${CHROOT}/etc/
+    perl -pi.bak -e "s/__SQUID_IP__/${SQUID_IP}/g" ${CHROOT}/etc/shorewall/rules
     cp ${STARTDIR}/internet-restrictions/restrict-internet.list.chroot ${WORKDIR}/config/package-lists/
 }
 
@@ -87,6 +89,7 @@ ECLIPSE_LANGUAGES="cpp java"
 ECLIPSE_MIRROR=mirror.umd.edu
 LICLIPSE_RELEASE=12.0.1
 PYCHARM_RELEASE=2026.2.3
+SQUID_IP=149.149.254.4
 
 # Hopefully nothing to change below this line
 WGET="wget --progress=dot:giga --no-clobber"
