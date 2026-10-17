@@ -145,7 +145,7 @@ for LANGUAGE in ${LANGUAGES}; do
     echo -ne "${LANGUAGE} "
     cp ${STARTDIR}/languages/${LANGUAGE}.list.chroot ${WORKDIR}/config/package-lists/
     cp ${STARTDIR}/languages/${LANGUAGE}/* ${CHROOT}/etc/skel/Desktop/test-compilers/
-    cat ${STARTDIR}/languages/${LANGUAGE}.md >> ${CHROOT}/opt/languages.md
+    ${STARTDIR}/languages/${LANGUAGE}_filter_md.sh < ${STARTDIR}/languages/${LANGUAGE}.md >> ${CHROOT}/opt/languages.md
 done
 echo "done."
 

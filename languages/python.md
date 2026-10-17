@@ -6,5 +6,5 @@ Programs are not compiled.
 
 Programs are run with:
 ```
-pypy3 program.py < file.in
+__PYPY__ program.py < file.in
 ```

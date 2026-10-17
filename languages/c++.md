@@ -1,10 +1,10 @@
 ## C++
 
-The local C compiler is `g++` __GCC_VERSION__.
+The local C compiler is `__CXX__` __GPP_VERSION__.
 
 Programs are compiled with:
 ```
-g++ __CXXFLAGS__ -o program program.cpp
+__CXX__ __CXXFLAGS__ -o program program.cpp
 ```
 
 Programs are run with:

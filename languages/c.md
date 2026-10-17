@@ -1,10 +1,10 @@
 ## C
 
-The local C compiler is `gcc` __GCC_VERSION__.
+The local C compiler is `__CC__` __GCC_VERSION__.
 
 Programs are compiled with:
 ```
-gcc __CFLAGS__ -o program program.c
+__CC__ __CFLAGS__ -o program program.c
 ```
 
 Programs are run with:
