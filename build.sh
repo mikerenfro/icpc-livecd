@@ -100,7 +100,7 @@ echo "Installing live-build and dependencies"
 sudo apt-get update
 sudo apt-get -y install gpg live-build live-boot-doc live-config-doc zstd
 
-if [ "$#" == 1 -a "$1" == "allow-internet" ]; then
+if [ "$#" == "1" -a "$1" == "allow-internet" ]; then
     ALLOW_INTERNET=1
 else
     ALLOW_INTERNET=0
