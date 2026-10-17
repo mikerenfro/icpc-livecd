@@ -85,15 +85,6 @@ function forbid_internet() {
     cp ${STARTDIR}/internet-restrictions/restrict-internet.list.chroot ${WORKDIR}/config/package-lists/
 }
 
-function get_package_version() {
-    PACKAGE=$1
-    curl -s https://sources.debian.org/api/src/${PACKAGE}/ \
-        | jq -r ".versions[] | select(.suites | index(\"${DEBIAN_RELEASE}\")) | .version" \
-        | sort --version-sort -r \
-        | head -1 \
-        | egrep -o '^[0-9.]+'
-}
-
 STARTDIR=${PWD}
 WORKDIR=~/icpc
 ECLIPSE_RELEASE=2026-09
