@@ -134,6 +134,7 @@ if [ "${ALLOW_INTERNET}" == "1" ]; then
 else
     forbid_internet
 fi
+cp ${STARTDIR}/languages/*.{ans,in} ${CHROOT}/etc/skel/Desktop/test-compilers/
 for LANGUAGE in ${LANGUAGES}; do
     cp ${STARTDIR}/languages/${LANGUAGE}.list.chroot ${WORKDIR}/config/package-lists/
     cp ${STARTDIR}/languages/${LANGUAGE}/* ${CHROOT}/etc/skel/Desktop/test-compilers/
