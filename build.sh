@@ -5,7 +5,7 @@ catch_error() {
     local exit_code=$?
     local line_number=$1
     echo "Error occurred on line $line_number with exit code $exit_code" >&2
-    
+
     # Perform cleanup actions here (e.g., removing temp files)
     cd ${STARTDIR}
     exit "$exit_code"
@@ -34,6 +34,7 @@ function install_eclipse() {
         cp ${STARTDIR}/applications/${shortcut}.desktop ${CHROOT}/usr/share/applications/
     done
     echo ""
+    echo "ECLIPSE_RELEASE=${ECLIPSE_RELEASE}" >> ${CHROOT}/opt/ide-versions
 }
 
 function install_liclipse() {
@@ -44,6 +45,7 @@ function install_liclipse() {
     tar --strip-components=1 -C ${LICLIPSE_DIR} \
         -zxf ${STARTDIR}/$(basename ${LICLIPSE_URL})
     cp ${STARTDIR}/applications/LiClipse.desktop ${CHROOT}/usr/share/applications/
+    echo "LICLIPSE_RELEASE=${LICLIPSE_RELEASE}" >> ${CHROOT}/opt/ide-versions
 }
 
 function install_pycharm() {
@@ -54,6 +56,7 @@ function install_pycharm() {
     tar --strip-components=1 -C ${PYCHARM_DIR} \
         -zxf ${STARTDIR}/$(basename ${PYCHARM_URL})
     cp ${STARTDIR}/applications/PyCharm.desktop ${CHROOT}/usr/share/applications/
+    echo "PYCHARM_RELEASE=${PYCHARM_RELEASE}" >> ${CHROOT}/opt/ide-versions
 }
 
 function install_vscode() {
@@ -69,7 +72,7 @@ function install_vscode() {
 
 function allow_internet() {
     # No-op for now
-    echo "Ensuring Internet access stays enabled"    
+    echo "Ensuring Internet access stays enabled"
 }
 
 function forbid_internet() {
@@ -89,28 +92,6 @@ function get_package_version() {
         | sort --version-sort -r \
         | head -1 \
         | egrep -o '^[0-9.]+'
-}
-
-function modify_team_readme() {
-    README=${CHROOT}/etc/skel/Desktop/test-compilers/README.html
-    MAKEFILE=${CHROOT}/etc/skel/Desktop/test-compilers/Makefile
-    GCC_VERSION=$(get_package_version gcc-14)
-    GPP_VERSION=$(get_package_version gcc-14) # g++ comes from the gcc sources, and has same version
-    JDK_VERSION=$(get_package_version openjdk-25-jdk)
-    PYPY_VERSION=$(get_package_version pypy3)
-    VSCODE_VERSION=$(curl -s https://packages.microsoft.com/repos/code/dists/stable/main/binary-amd64/Packages | grep -A1 '^Package: code$' | grep '^Version: ' | cut -d: -f2 | sort --version-sort -r | head -1 | egrep -o '^[0-9.]+')
-    perl -pi -e \
-        "
-        s/__GCC_VERSION__/${GCC_VERSION}/g;
-        s/__GPP_VERSION__/${GPP_VERSION}/g;
-        s/__JDK_VERSION__/${JDK_VERSION}/g;
-        s/__PYPY_VERSION__/${PYPY_VERSION}/g;
-        s/__ECLIPSE_VERSION__/${ECLIPSE_RELEASE}/g;
-        s/__LICLIPSE_VERSION__/${LICLIPSE_RELEASE}/g;
-        s/__PYCHARM_VERSION__/${PYCHARM_RELEASE}/g;
-        s/__VSCODE_VERSION__/${VSCODE_VERSION}/g;
-        " \
-        ${README}
 }
 
 STARTDIR=${PWD}
@@ -163,6 +144,7 @@ else
 fi
 
 echo "Installing optional IDEs (if any): "
+> ${CHROOT}/opt/ide-versions
 install_eclipse
 install_liclipse
 install_pycharm
