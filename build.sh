@@ -162,7 +162,7 @@ else
     forbid_internet
 fi
 
-echo -ne "Installing optional IDEs (if any): "
+echo "Installing optional IDEs (if any): "
 install_eclipse
 install_liclipse
 install_pycharm
