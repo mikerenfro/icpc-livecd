@@ -14,7 +14,7 @@ catch_error() {
 trap 'catch_error $LINENO' ERR INT
 
 function install_eclipse() {
-    echo -ne "Eclipse "
+    echo -ne "- Eclipse "
     (cd ${STARTDIR}
     for language in ${ECLIPSE_LANGUAGES}; do
         url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
@@ -33,10 +33,11 @@ function install_eclipse() {
         esac
         cp ${STARTDIR}/applications/${shortcut}.desktop ${CHROOT}/usr/share/applications/
     done
+    echo ""
 }
 
 function install_liclipse() {
-    echo -ne "Liclipse "
+    echo "- Liclipse"
     (cd ${STARTDIR} && ${WGET} ${LICLIPSE_URL})
     LICLIPSE_DIR=${CHROOT}/opt/liclipse
     mkdir -p ${LICLIPSE_DIR}
@@ -46,10 +47,9 @@ function install_liclipse() {
 }
 
 function install_pycharm() {
-    echo -ne "Pycharm "
+    echo "- Pycharm"
     (cd ${STARTDIR} && ${WGET} ${PYCHARM_URL})
     PYCHARM_DIR=${CHROOT}/opt/pycharm
-    echo "Extracting PyCharm"
     mkdir -p ${PYCHARM_DIR}
     tar --strip-components=1 -C ${PYCHARM_DIR} \
         -zxf ${STARTDIR}/$(basename ${PYCHARM_URL})
@@ -57,9 +57,9 @@ function install_pycharm() {
 }
 
 function install_vscode() {
-    echo -ne "VS Code "
+    echo "- VS Code"
     (cd ${STARTDIR}
-    wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft-2025.asc
+    wget -q --mirror --no-directories https://packages.microsoft.com/keys/microsoft-2025.asc
     )
     TRUSTED_GPG_DIR=${CHROOT}/etc/apt/trusted.gpg.d
     mkdir -p ${TRUSTED_GPG_DIR}
@@ -76,7 +76,9 @@ function forbid_internet() {
     # Ensure Internet-restricting files exist in ${CHROOT}
     echo "Restricting Internet access via /etc/{environment,shorewall}"
     cp ${STARTDIR}/internet-restrictions/environment ${CHROOT}/etc/
+    perl -pi -e "s/__SQUID_IP__/${SQUID_IP}/g" ${CHROOT}/etc/environment
     cp -a ${STARTDIR}/internet-restrictions/shorewall ${CHROOT}/etc/
+    perl -pi -e "s/__SQUID_IP__/${SQUID_IP}/g" ${CHROOT}/etc/shorewall/rules
     cp ${STARTDIR}/internet-restrictions/restrict-internet.list.chroot ${WORKDIR}/config/package-lists/
 }
 
@@ -87,9 +89,10 @@ ECLIPSE_LANGUAGES="cpp java"
 ECLIPSE_MIRROR=mirror.umd.edu
 LICLIPSE_RELEASE=12.0.1
 PYCHARM_RELEASE=2026.2.3
+SQUID_IP=149.149.254.4
 
 # Hopefully nothing to change below this line
-WGET="wget --progress=dot:giga --no-clobber"
+WGET="wget --no-clobber -q"
 PYCHARM_URL=https://download.jetbrains.com/python/pycharm-${PYCHARM_RELEASE}.tar.gz
 LICLIPSE_URL=https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
 
