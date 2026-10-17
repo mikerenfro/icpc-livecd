@@ -30,7 +30,6 @@ function install_eclipse() {
         echo -ne "(for ${language}) "
         mkdir -p ${ECLIPSE_DIR}/${language}
         tarball=${STARTDIR}/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
-        echo "Extracting Eclipse ${language}"
         tar -zxf ${tarball} --strip-components=1 -C ${ECLIPSE_DIR}/${language}
         case ${language} in
             cpp) shortcut="Eclipse-C++";;
@@ -44,7 +43,6 @@ function install_liclipse() {
     echo -ne "Liclipse "
     (cd ${STARTDIR} && ${WGET} ${LICLIPSE_URL})
     LICLIPSE_DIR=${CHROOT}/opt/liclipse
-    echo "Extracting LiClipse"
     mkdir -p ${LICLIPSE_DIR}
     tar --strip-components=1 -C ${LICLIPSE_DIR} \
         -zxf ${STARTDIR}/$(basename ${LICLIPSE_URL})
@@ -141,8 +139,8 @@ echo "$(date): done"
 popd
 
 if [ "${ALLOW_INTERNET}" == "1" ]; then
-    mv -v ${WORKDIR}/live-image-amd64.hybrid.iso ~/icpc-livecd-with-internet-amd64.hybrid.iso
-    forbid_internet
+    FINAL_ISO=~/icpc-livecd-with-internet-amd64.hybrid.iso
 else
-    mv -v ${WORKDIR}/live-image-amd64.hybrid.iso ~/icpc-livecd-without-internet-amd64.hybrid.iso
+    FINAL_ISO=~/icpc-livecd-without-internet-amd64.hybrid.iso
 fi
+mv -vf ${WORKDIR}/live-image-amd64.hybrid.iso ${FINAL_ISO}
