@@ -20,28 +20,28 @@ all: hw_icpc_c hw_icpc_cpp hw_icpc_java.class leggjasaman_c leggjasaman_cpp legg
 	$(PY3) hw_icpc_py3.py
 	@echo "# Testing Leggjasaman C against input 1"
 	./leggjasaman_c < 1.in | tee 1-test.ans
-	diff -u 1.ans 1-test.ans && echo ✅ passed || echo ❌ failed
+	@diff -u 1.ans 1-test.ans && echo ✅ passed || echo ❌ failed
 	@echo "# Testing Leggjasaman C against input 2"
 	./leggjasaman_c < 2.in | tee 2-test.ans
-	diff -u 2.ans 2-test.ans && echo ✅ passed || echo ❌ failed
+	@diff -u 2.ans 2-test.ans && echo ✅ passed || echo ❌ failed
 	@echo "# Testing Leggjasaman C++ against input 1"
 	./leggjasaman_cpp < 1.in | tee 1-test.ans
-	diff -u 1.ans 1-test.ans && echo ✅ passed || echo ❌ failed
+	@diff -u 1.ans 1-test.ans && echo ✅ passed || echo ❌ failed
 	@echo "# Testing Leggjasaman C++ against input 2"
 	./leggjasaman_cpp < 2.in | tee 2-test.ans
-	diff -u 2.ans 2-test.ans && echo ✅ passed || echo ❌ failed
+	@diff -u 2.ans 2-test.ans && echo ✅ passed || echo ❌ failed
 	@echo "# Testing Leggjasaman Java against input 1"
 	$(JAVA) $(JAVAFLAGS) leggjasaman_java < 1.in | tee 1-test.ans
-	diff -u 1.ans 1-test.ans && echo ✅ passed || echo ❌ failed
+	@diff -u 1.ans 1-test.ans && echo ✅ passed || echo ❌ failed
 	@echo "# Testing Leggjasaman Java against input 2"
 	$(JAVA) $(JAVAFLAGS) leggjasaman_java < 2.in | tee 2-test.ans
-	diff -u 2.ans 2-test.ans && echo ✅ passed || echo ❌ failed
+	@diff -u 2.ans 2-test.ans && echo ✅ passed || echo ❌ failed
 	@echo "# Testing Leggjasaman Python against input 1"
 	$(PY3) leggjasaman_py3.py < 1.in | tee 1-test.ans
-	diff -u 1.ans 1-test.ans && echo ✅ passed || echo ❌ failed
+	@diff -u 1.ans 1-test.ans && echo ✅ passed || echo ❌ failed
 	@echo "# Testing Leggjasaman Python against input 2"
 	$(PY3) leggjasaman_py3.py < 2.in | tee 2-test.ans
-	diff -u 2.ans 2-test.ans && echo ✅ passed || echo ❌ failed
+	@diff -u 2.ans 2-test.ans && echo ✅ passed || echo ❌ failed
 
 %_c: %_c.c
 	$(CC) $(CFLAGS) -o $@ $<
