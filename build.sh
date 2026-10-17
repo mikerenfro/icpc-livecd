@@ -151,9 +151,6 @@ install_pycharm
 install_vscode
 echo "done."
 
-echo "Modifying team README to match installed environment"
-modify_team_readme
-
 echo "$(date): building live CD"
 sudo lb build >> ~/icpc-build.out 2>&1
 echo "$(date): done"
