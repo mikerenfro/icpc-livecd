@@ -2,6 +2,7 @@ apt-transport-https
 ca-certificates
 openssh-server
 task-xfce-desktop
+fonts-noto-color-emoji
 emacs
 vim
 gcc-14
@@ -9,7 +10,7 @@ g++-14
 make
 libc6-dev
 dpkg-dev
-openjdk-21-jdk
+openjdk-25-jdk
 pypy3
 user-setup
 firefox-esr
