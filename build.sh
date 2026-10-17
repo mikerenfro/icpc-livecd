@@ -82,6 +82,37 @@ function forbid_internet() {
     cp ${STARTDIR}/internet-restrictions/restrict-internet.list.chroot ${WORKDIR}/config/package-lists/
 }
 
+function get_package_version() {
+    PACKAGE=$1
+    curl -s https://sources.debian.org/api/src/${PACKAGE}/ \
+        | jq -r ".versions[] | select(.suites | index(\"${DEBIAN_RELEASE}\")) | .version" \
+        | sort --version-sort -r \
+        | head -1 \
+        | egrep -o '^[0-9.]+'
+}
+
+function modify_team_readme() {
+    README=${CHROOT}/etc/skel/Desktop/test-compilers/README.html
+    MAKEFILE=${CHROOT}/etc/skel/Desktop/test-compilers/Makefile
+    GCC_VERSION=$(get_package_version gcc-14)
+    GPP_VERSION=$(get_package_version gcc-14) # g++ comes from the gcc sources, and has same version
+    JDK_VERSION=$(get_package_version openjdk-25-jdk)
+    PYPY_VERSION=$(get_package_version pypy3)
+    VSCODE_VERSION=$(curl -s https://packages.microsoft.com/repos/code/dists/stable/main/binary-amd64/Packages | grep -A1 '^Package: code$' | grep '^Version: ' | cut -d: -f2 | sort --version-sort -r | head -1 | egrep -o '^[0-9.]+')
+    perl -pi -e \
+        "
+        s/__GCC_VERSION__/${GCC_VERSION}/g;
+        s/__GPP_VERSION__/${GPP_VERSION}/g;
+        s/__JDK_VERSION__/${JDK_VERSION}/g;
+        s/__PYPY_VERSION__/${PYPY_VERSION}/g;
+        s/__ECLIPSE_VERSION__/${ECLIPSE_RELEASE}/g;
+        s/__LICLIPSE_VERSION__/${LICLIPSE_RELEASE}/g;
+        s/__PYCHARM_VERSION__/${PYCHARM_RELEASE}/g;
+        s/__VSCODE_VERSION__/${VSCODE_VERSION}/g;
+        " \
+        ${README}
+}
+
 STARTDIR=${PWD}
 WORKDIR=~/icpc
 ECLIPSE_RELEASE=2026-09
@@ -95,13 +126,14 @@ SQUID_IP=149.149.254.4
 WGET="wget --no-clobber -q"
 PYCHARM_URL=https://download.jetbrains.com/python/pycharm-${PYCHARM_RELEASE}.tar.gz
 LICLIPSE_URL=https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
+DEBIAN_RELEASE=trixie
 
 CHROOT=${WORKDIR}/config/includes.chroot
 
 # Dependencies
 echo "Installing live-build and dependencies"
 sudo apt-get update
-sudo apt-get -y install gpg live-build live-boot-doc live-config-doc zstd
+sudo apt-get -y install gpg jq live-build live-boot-doc live-config-doc zstd
 
 if [ "$#" == "1" ]; then
     if [ "$1" == "allow-internet" ]; then
@@ -117,7 +149,7 @@ fi
 echo "Cleaning out and recreating ${WORKDIR}"
 sudo rm -rf ${WORKDIR} && mkdir -p ${WORKDIR} && pushd ${WORKDIR}
 lb config \
-    --distribution trixie \
+    --distribution ${DEBIAN_RELEASE} \
     --apt-recommends false \
     --bootappend-live "boot=live components quiet splash noroot toram nouveau.modeset=0" \
     --bootappend-live-failsafe "boot=live components memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=788 noroot toram"
@@ -136,6 +168,10 @@ install_liclipse
 install_pycharm
 install_vscode
 echo "done."
+
+echo "Modifying team README to match installed environment"
+modify_team_readme
+
 echo "$(date): building live CD"
 sudo lb build >> ~/icpc-build.out 2>&1
 echo "$(date): done"
