@@ -138,13 +138,16 @@ if [ "${ALLOW_INTERNET}" == "1" ]; then
 else
     forbid_internet
 fi
+echo -ne "Adding language support: "
 cp ${STARTDIR}/languages/*.{ans,in} ${STARTDIR}/languages/Makefile ${CHROOT}/etc/skel/Desktop/test-compilers/
 > ${CHROOT}/opt/languages.md
 for LANGUAGE in ${LANGUAGES}; do
+    echo -ne "${LANGUAGE} "
     cp ${STARTDIR}/languages/${LANGUAGE}.list.chroot ${WORKDIR}/config/package-lists/
     cp ${STARTDIR}/languages/${LANGUAGE}/* ${CHROOT}/etc/skel/Desktop/test-compilers/
     cat ${STARTDIR}/languages/${LANGUAGE}.md >> ${CHROOT}/opt/languages.md
 done
+echo "done."
 
 echo "Installing optional IDEs (if any): "
 > ${CHROOT}/opt/ide-versions
