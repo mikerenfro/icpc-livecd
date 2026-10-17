@@ -1,0 +1,14 @@
+PY3=pypy3
+
+all: hw_icpc_java.class leggjasaman_java.class
+	@echo "Hello, World in Python 3"
+	$(PY3) hw_icpc.py
+	@echo "# Testing Leggjasaman Python against input 1"
+	$(PY3) leggjasaman.py < 1.in | tee 1-test.ans
+	@diff -u 1.ans 1-test.ans && echo ✅ passed || echo ❌ failed
+	@echo "# Testing Leggjasaman Python against input 2"
+	$(PY3) leggjasaman.py < 2.in | tee 2-test.ans
+	@diff -u 2.ans 2-test.ans && echo ✅ passed || echo ❌ failed
+
+clean:
+	rm -f hw_icpc.class leggjasaman.class

@@ -1,0 +1,18 @@
+JAVAC=javac
+JAVACFLAGS=-encoding UTF-8 -sourcepath . -cp ./*.class -d .
+JAVA=java
+MEMLIM=1920m
+JAVAFLAGS=-Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms$(MEMLIM) -Xmx$(MEMLIM) -cp .:./*.class
+
+all: hw_icpc_java.class leggjasaman_java.class
+	@echo "# Hello, World in Java"
+	$(JAVA) $(JAVAFLAGS) hw_icpc
+	@echo "# Testing Leggjasaman Java against input 1"
+	$(JAVA) $(JAVAFLAGS) leggjasaman_java < 1.in | tee 1-test.ans
+	@diff -u 1.ans 1-test.ans && echo ✅ passed || echo ❌ failed
+	@echo "# Testing Leggjasaman Java against input 2"
+	$(JAVA) $(JAVAFLAGS) leggjasaman_java < 2.in | tee 2-test.ans
+	@diff -u 2.ans 2-test.ans && echo ✅ passed || echo ❌ failed
+
+clean:
+	rm -f hw_icpc.class leggjasaman.class

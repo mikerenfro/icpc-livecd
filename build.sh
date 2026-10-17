@@ -93,6 +93,7 @@ ECLIPSE_MIRROR=mirror.umd.edu
 LICLIPSE_RELEASE=12.0.1
 PYCHARM_RELEASE=2026.2.3
 SQUID_IP=149.149.254.4
+LANGUAGES="c c++ java python"
 
 # Hopefully nothing to change below this line
 WGET="wget --no-clobber -q"
@@ -133,6 +134,10 @@ if [ "${ALLOW_INTERNET}" == "1" ]; then
 else
     forbid_internet
 fi
+for LANGUAGE in ${LANGUAGES}; do
+    cp ${STARTDIR}/languages/${LANGUAGE}.list.chroot ${WORKDIR}/config/package-lists/
+    cp ${STARDIR}/languages/${LANGUAGE}/* ${CHROOT}/etc/skel/Desktop/test-compilers/
+done
 
 echo "Installing optional IDEs (if any): "
 > ${CHROOT}/opt/ide-versions
