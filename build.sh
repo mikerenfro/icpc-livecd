@@ -7,11 +7,7 @@ catch_error() {
     echo "Error occurred on line $line_number with exit code $exit_code" >&2
     
     # Perform cleanup actions here (e.g., removing temp files)
-    echo "Restoring /opt, applications, Internet restrictions"
     cd ${STARTDIR}
-    if [ "${ALLOW_INTERNET}" == "1" ]; then
-        forbid_internet
-    fi
     exit "$exit_code"
 }
 
@@ -100,6 +96,7 @@ LICLIPSE_URL=https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_${L
 CHROOT=${WORKDIR}/config/includes.chroot
 
 # Dependencies
+echo "Installing live-build and dependencies"
 sudo apt-get update
 sudo apt-get -y install gpg live-build live-boot-doc live-config-doc zstd
 
