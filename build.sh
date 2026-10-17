@@ -49,7 +49,6 @@ function install_pycharm() {
     echo -ne "Pycharm "
     (cd ${STARTDIR} && ${WGET} ${PYCHARM_URL})
     PYCHARM_DIR=${CHROOT}/opt/pycharm
-    echo "Extracting PyCharm"
     mkdir -p ${PYCHARM_DIR}
     tar --strip-components=1 -C ${PYCHARM_DIR} \
         -zxf ${STARTDIR}/$(basename ${PYCHARM_URL})
@@ -59,7 +58,7 @@ function install_pycharm() {
 function install_vscode() {
     echo -ne "VS Code "
     (cd ${STARTDIR}
-    wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft-2025.asc
+    wget -q --mirror --no-directories https://packages.microsoft.com/keys/microsoft-2025.asc
     )
     TRUSTED_GPG_DIR=${CHROOT}/etc/apt/trusted.gpg.d
     mkdir -p ${TRUSTED_GPG_DIR}
@@ -92,7 +91,7 @@ PYCHARM_RELEASE=2026.2.3
 SQUID_IP=149.149.254.4
 
 # Hopefully nothing to change below this line
-WGET="wget --progress=dot:giga --no-clobber"
+WGET="wget --no-clobber -q"
 PYCHARM_URL=https://download.jetbrains.com/python/pycharm-${PYCHARM_RELEASE}.tar.gz
 LICLIPSE_URL=https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
 
