@@ -9,9 +9,6 @@ catch_error() {
     # Perform cleanup actions here (e.g., removing temp files)
     echo "Restoring /opt, applications, Internet restrictions"
     cd ${STARTDIR}
-    rm -rf \
-        ${CHROOT}/opt/{eclipse,liclipse,pycharm} \
-        ${CHROOT}/usr/share/applications/{Eclipse-C++,Eclipse-Java,LiClipse,PyCharm,VS-Code}.desktop
     if [ "${ALLOW_INTERNET}" == "1" ]; then
         forbid_internet
     fi
@@ -21,63 +18,72 @@ catch_error() {
 trap 'catch_error $LINENO' ERR INT
 
 function install_eclipse() {
+    echo -ne "Eclipse "
+    (cd ${STARTDIR}
     for language in ${ECLIPSE_LANGUAGES}; do
         url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
         ${WGET} --progress=dot:giga --no-clobber ${url}
-    done
+    done)
 
-    ECLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/eclipse
+    ECLIPSE_DIR=${CHROOT}/opt/eclipse
     for language in ${ECLIPSE_LANGUAGES}; do
+        echo -ne "(for ${language}) "
         mkdir -p ${ECLIPSE_DIR}/${language}
-        tarball=${PWD}/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
+        tarball=${STARTDIR}/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
         echo "Extracting Eclipse ${language}"
         tar -zxf ${tarball} --strip-components=1 -C ${ECLIPSE_DIR}/${language}
         case ${language} in
             cpp) shortcut="Eclipse-C++";;
             java) shortcut="Eclipse-Java";;
         esac
-        cp ${PWD}/applications/${shortcut}.desktop ${PWD}/debian-live/config/includes.chroot/usr/share/applications/
+        cp ${STARTDIR}/applications/${shortcut}.desktop ${CHROOT}/usr/share/applications/
     done
 }
 
 function install_liclipse() {
-    ${WGET} ${LICLIPSE_URL}
-    LICLIPSE_DIR=${PWD}/debian-live/config/includes.chroot/opt/liclipse
+    echo -ne "Liclipse "
+    (cd ${STARTDIR} && ${WGET} ${LICLIPSE_URL})
+    LICLIPSE_DIR=${CHROOT}/opt/liclipse
     echo "Extracting LiClipse"
     mkdir -p ${LICLIPSE_DIR}
     tar --strip-components=1 -C ${LICLIPSE_DIR} \
-        -zxf ${PWD}/$(basename ${LICLIPSE_URL})
-    cp ${PWD}/applications/LiClipse.desktop ${PWD}/debian-live/config/includes.chroot/usr/share/applications/
+        -zxf ${STARTDIR}/$(basename ${LICLIPSE_URL})
+    cp ${STARTDIR}/applications/LiClipse.desktop ${CHROOT}/usr/share/applications/
 }
 
 function install_pycharm() {
-    ${WGET} ${PYCHARM_URL}
-    PYCHARM_DIR=${PWD}/debian-live/config/includes.chroot/opt/pycharm
+    echo -ne "Pycharm "
+    (cd ${STARTDIR} && ${WGET} ${PYCHARM_URL})
+    PYCHARM_DIR=${CHROOT}/opt/pycharm
     echo "Extracting PyCharm"
     mkdir -p ${PYCHARM_DIR}
     tar --strip-components=1 -C ${PYCHARM_DIR} \
-        -zxf ${PWD}/$(basename ${PYCHARM_URL})
-    cp ${PWD}/applications/PyCharm.desktop ${PWD}/debian-live/config/includes.chroot/usr/share/applications/
+        -zxf ${STARTDIR}/$(basename ${PYCHARM_URL})
+    cp ${STARTDIR}/applications/PyCharm.desktop ${CHROOT}/usr/share/applications/
 }
 
 function install_vscode() {
+    echo -ne "VS Code "
+    (cd ${STARTDIR}
     wget --mirror --no-directories https://packages.microsoft.com/keys/microsoft-2025.asc
-    TRUSTED_GPG_DIR=${PWD}/debian-live/config/includes.chroot/etc/apt/trusted.gpg.d
+    )
+    TRUSTED_GPG_DIR=${CHROOT}/etc/apt/trusted.gpg.d
     mkdir -p ${TRUSTED_GPG_DIR}
-    gpg --dearmor < microsoft-2025.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
-    cp ${PWD}/applications/VS-Code.desktop ${PWD}/debian-live/config/includes.chroot/usr/share/applications/
+    gpg --dearmor < ${STARTDIR}/microsoft-2025.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
+    cp ${STARTDIR}/applications/VS-Code.desktop ${CHROOT}/usr/share/applications/
 }
 
 function allow_internet() {
-    # rename Internet-restricting files out of the way
-    mv ${CHROOT}/etc/environment debian-live/config/includes.chroot/etc/_environment
-    mv ${PWD}/debian-live/config/package-lists/restrict-internet.list.chroot debian-live/config/package-lists/restrict-internet._list.chroot
+    # No-op for now
+    echo "Ensuring Internet access stays enabled"    
 }
 
 function forbid_internet() {
-    # Restore names of Internet-restricting files
-    mv ${CHROOT}/etc/_environment debian-live/config/includes.chroot/etc/environment
-    mv debian-live/config/package-lists/restrict-internet._list.chroot debian-live/config/package-lists/restrict-internet.list.chroot
+    # Ensure Internet-restricting files exist in ${CHROOT}
+    echo "Restricting Internet access via /etc/{environment,shorewall}"
+    cp ${STARTDIR}/internet-restrictions/environment ${CHROOT}/etc/
+    cp -a ${STARTDIR}/internet-restrictions/shorewall ${CHROOT}/etc/
+    cp ${STARTDIR}/internet-restrictions/restrict-internet.list.chroot ${WORKDIR}/config/package-lists/
 }
 
 STARTDIR=${PWD}
@@ -93,16 +99,11 @@ WGET="wget --progress=dot:giga --no-clobber"
 PYCHARM_URL=https://download.jetbrains.com/python/pycharm-${PYCHARM_RELEASE}.tar.gz
 LICLIPSE_URL=https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
 
-CHROOT=${PWD}/debian-live/config/includes.chroot
+CHROOT=${WORKDIR}/config/includes.chroot
 
 # Dependencies
 sudo apt-get update
 sudo apt-get -y install gpg live-build live-boot-doc live-config-doc zstd
-
-install_eclipse
-install_liclipse
-install_pycharm
-install_vscode
 
 if [ "$1" == "allow-internet" ]; then
     ALLOW_INTERNET=1
@@ -110,20 +111,29 @@ else
     ALLOW_INTERNET=0
 fi
 
-if [ "${ALLOW_INTERNET}" == "1" ]; then
-    allow_internet
-fi
-
 # Preparations
-mkdir -p ${WORKDIR} && pushd ${WORKDIR}
+echo "Cleaning out and recreating ${WORKDIR}"
+sudo rm -rf ${WORKDIR} && mkdir -p ${WORKDIR} && pushd ${WORKDIR}
 lb config \
     --distribution trixie \
     --apt-recommends false \
     --bootappend-live "boot=live components quiet splash noroot toram nouveau.modeset=0" \
     --bootappend-live-failsafe "boot=live components memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=788 noroot toram"
-echo "Syncing debian-live/config contents"
-rsync -a ${OLDPWD}/debian-live/config/ config/
 
+echo "Syncing debian-live/config contents"
+rsync -a ${STARDIR}/debian-live/config/ config/
+if [ "${ALLOW_INTERNET}" == "1" ]; then
+    allow_internet
+else
+    forbid_internet
+fi
+
+echo -ne "Installing optional IDEs (if any): "
+install_eclipse
+install_liclipse
+install_pycharm
+install_vscode
+echo "done."
 echo "$(date): building live CD"
 sudo lb build >> ~/icpc-build.out 2>&1
 echo "$(date): done"
