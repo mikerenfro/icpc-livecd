@@ -136,7 +136,7 @@ else
 fi
 for LANGUAGE in ${LANGUAGES}; do
     cp ${STARTDIR}/languages/${LANGUAGE}.list.chroot ${WORKDIR}/config/package-lists/
-    cp ${STARDIR}/languages/${LANGUAGE}/* ${CHROOT}/etc/skel/Desktop/test-compilers/
+    cp ${STARTDIR}/languages/${LANGUAGE}/* ${CHROOT}/etc/skel/Desktop/test-compilers/
 done
 
 echo "Installing optional IDEs (if any): "
