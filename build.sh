@@ -35,6 +35,7 @@ function install_eclipse() {
     done
     echo ""
     echo "ECLIPSE_RELEASE=${ECLIPSE_RELEASE}" >> ${CHROOT}/opt/ide-versions
+    echo "- Eclipse __ECLIPSE_VERSION__ (for C/C++ and Java)" >> ${CHROOT}/opt/ides.md
 }
 
 function install_liclipse() {
@@ -46,6 +47,7 @@ function install_liclipse() {
         -zxf ${STARTDIR}/$(basename ${LICLIPSE_URL})
     cp ${STARTDIR}/applications/LiClipse.desktop ${CHROOT}/usr/share/applications/
     echo "LICLIPSE_RELEASE=${LICLIPSE_RELEASE}" >> ${CHROOT}/opt/ide-versions
+    echo "- LiClipse __LICLIPSE_VERSION__ (for Python)" >> ${CHROOT}/opt/ides.md
 }
 
 function install_pycharm() {
@@ -57,6 +59,7 @@ function install_pycharm() {
         -zxf ${STARTDIR}/$(basename ${PYCHARM_URL})
     cp ${STARTDIR}/applications/PyCharm.desktop ${CHROOT}/usr/share/applications/
     echo "PYCHARM_RELEASE=${PYCHARM_RELEASE}" >> ${CHROOT}/opt/ide-versions
+    echo "- PyCharm Community Edition __PYCHARM_VERSION__" >> ${CHROOT}/opt/ides.md
 }
 
 function install_vscode() {
@@ -68,6 +71,7 @@ function install_vscode() {
     mkdir -p ${TRUSTED_GPG_DIR}
     gpg --dearmor < ${STARTDIR}/microsoft-2025.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
     cp ${STARTDIR}/applications/VS-Code.desktop ${CHROOT}/usr/share/applications/
+    echo "- Visual Studio Code __VSCODE_VERSION__" >> ${CHROOT}/opt/ides.md
 }
 
 function allow_internet() {
@@ -135,13 +139,16 @@ else
     forbid_internet
 fi
 cp ${STARTDIR}/languages/*.{ans,in} ${STARTDIR}/languages/Makefile ${CHROOT}/etc/skel/Desktop/test-compilers/
+> ${CHROOT}/opt/languages.md
 for LANGUAGE in ${LANGUAGES}; do
     cp ${STARTDIR}/languages/${LANGUAGE}.list.chroot ${WORKDIR}/config/package-lists/
     cp ${STARTDIR}/languages/${LANGUAGE}/* ${CHROOT}/etc/skel/Desktop/test-compilers/
+    cat ${STARTDIR}/languages/${LANGUAGE}.md >> ${CHROOT}/opt/languages.md
 done
 
 echo "Installing optional IDEs (if any): "
 > ${CHROOT}/opt/ide-versions
+> ${CHROOT}/opt/ides.md
 install_eclipse
 install_liclipse
 install_pycharm

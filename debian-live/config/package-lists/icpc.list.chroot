@@ -15,3 +15,4 @@ zstd
 gdb
 libglib2.0-bin
 libwebkit2gtk-4.1-0
+pandoc
