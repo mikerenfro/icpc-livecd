@@ -121,7 +121,7 @@ lb config \
     --bootappend-live-failsafe "boot=live components memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=788 noroot toram"
 
 echo "Syncing debian-live/config contents"
-rsync -a ${STARDIR}/debian-live/config/ config/
+rsync -a ${STARTDIR}/debian-live/config/ config/
 if [ "${ALLOW_INTERNET}" == "1" ]; then
     allow_internet
 else
