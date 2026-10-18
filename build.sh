@@ -89,7 +89,6 @@ function forbid_internet() {
     cp ${STARTDIR}/internet-restrictions/restrict-internet.list.chroot ${WORKDIR}/config/package-lists/
 }
 
-STARTDIR=${PWD}
 WORKDIR=~/icpc
 ECLIPSE_RELEASE=2026-09
 ECLIPSE_LANGUAGES="cpp java"
@@ -100,6 +99,7 @@ SQUID_IP=149.149.254.4
 LANGUAGES="c c++ java python"
 
 # Hopefully nothing to change below this line
+STARTDIR=${PWD}
 WGET="wget --no-clobber -q"
 PYCHARM_URL=https://download.jetbrains.com/python/pycharm-${PYCHARM_RELEASE}.tar.gz
 LICLIPSE_URL=https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
