@@ -10,6 +10,10 @@ Includes: gcc, g++, Java, PyPy 3, Eclipse (for C, C++, and Java), LiClipse, PyCh
 Locked down to prevent user administrative access, and limits all outbound network traffic to a preconfigured Squid proxy server.
 Currently preconfigured for the US Mid-Central region proxy server, and only administerable via root ssh key.
 
+As with any normal Debian Live installation, it can be booted into a RAMdisk to avoid modifying the host system at all, and the ISO can be used to make a bootable flash drive.
+As of 2026, an ISO containing the base environment, two Eclipse installations (C/C++ and Java), LiClipse, PyCharm, and Visual Studio code is under 3.2 GB (or under 3.0 GiB).
+PyCharm represents about 1 GB of that total.
+
 ## Build requirements
 
 - Debian amd64 installation (tested on 13.7, may work on earlier versions)
