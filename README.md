@@ -14,6 +14,9 @@ As with any normal Debian Live installation, it can be booted into a RAMdisk to 
 As of 2026, an ISO containing the base environment, two Eclipse installations (C/C++ and Java), LiClipse, PyCharm, and Visual Studio code is under 3.2 GB (or under 3.0 GiB).
 PyCharm represents about 1 GB of that total.
 
+Theoretically, this environment will also build a README.html on the live user's desktop.
+This can contain any site-specific notes you want your teams to have, and can automatically populate sections with details about your installed compilers, compiler options, and IDEs.
+
 ## Build requirements
 
 - Debian amd64 installation (tested on 13.7, may work on earlier versions)
