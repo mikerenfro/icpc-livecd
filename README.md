@@ -5,23 +5,21 @@
 Summary:
 a 64-bit Debian Live installation for the International Collegiate Programming Competition (ICPC).
 
-Includes: gcc, g++, Java, Python 3, Eclipse (for C, C++, Java, and Python), PyCharm, Visual Studio Code, Vim, Emacs, gdb.
+Includes: gcc, g++, Java, PyPy 3, Eclipse (for C, C++, and Java), LiClipse, PyCharm, Visual Studio Code, Vim, Emacs, and gdb.
 Locked down to prevent user administrative access, and limits all outbound network traffic to a preconfigured Squid proxy server.
 Currently preconfigured for the US Mid-Central region proxy server, and only administerable via root ssh key.
 
 System requirements:
 
-- Debian amd64 installation (tested on 13.0, may work on earlier versions)
+- Debian amd64 installation (tested on 13.7, may work on earlier versions)
 
 Basic Usage:
 
 1. Read through `build.sh` and the files under `debian-live/config`.
-2. Run `./build.sh` or `./build.sh allow-internet` as root (unprivileged builds will come later).
-3. Copy the resulting `live-image-amd64.hybrid.iso` to media and boot.
+2. Run `./build.sh` or `./build.sh allow-internet` as any user with `sudo` privileges.
+3. Copy the resulting `~/icpc-livecd-*-amd64.hybrid.iso` to media and boot.
 
 **The `allow-internet` build will allow full outbound Internet access for teams to practice with, and should not be used for an actual contest.**
-
-You may have to remove the `~/icpc` directory before making a new build. The included `Vagrantfile` does this automatically as part of provisioning.
 
 Administration:
 
