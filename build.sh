@@ -144,7 +144,8 @@ cp ${STARTDIR}/languages/*.{ans,in} ${STARTDIR}/languages/Makefile ${CHROOT}/etc
 for LANGUAGE in ${LANGUAGES}; do
     echo -ne "${LANGUAGE} "
     cp ${STARTDIR}/languages/${LANGUAGE}.list.chroot ${WORKDIR}/config/package-lists/
-    cp ${STARTDIR}/languages/${LANGUAGE}/* ${CHROOT}/etc/skel/Desktop/test-compilers/
+    cp ${STARTDIR}/languages/${LANGUAGE}/hooks/* ${WORKDIR}/config/hooks/live/
+    cp ${STARTDIR}/languages/${LANGUAGE}/test-compilers/* ${CHROOT}/etc/skel/Desktop/test-compilers/
     ${STARTDIR}/languages/${LANGUAGE}_filter_md.sh < ${STARTDIR}/languages/${LANGUAGE}.md >> ${CHROOT}/opt/languages.md
 done
 echo "done."
