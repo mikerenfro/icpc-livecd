@@ -1,7 +1,7 @@
 function install_ide() {
     echo -ne "- Eclipse "
 
-    HERE=$(dirname $0)
+    HERE=${STARTDIR}/ides/${IDE}
 
     echo "- Pycharm"
     PYCHARM_RELEASE=2026.2.3

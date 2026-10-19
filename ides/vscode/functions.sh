@@ -1,7 +1,7 @@
 function install_ide() {
     echo "- VS Code"
 
-    HERE=$(dirname $0)
+    HERE=${STARTDIR}/ides/${IDE}
 
     (cd ${STARTDIR} && ${WGET} https://packages.microsoft.com/keys/microsoft-2025.asc)
     TRUSTED_GPG_DIR=${CHROOT}/etc/apt/trusted.gpg.d

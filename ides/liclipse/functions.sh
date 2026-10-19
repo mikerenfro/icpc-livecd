@@ -1,7 +1,7 @@
 function install_ide() {
     echo "- Liclipse"
 
-    HERE=$(dirname $0)
+    HERE=${STARTDIR}/ides/${IDE}
 
     LICLIPSE_URL=https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
     LICLIPSE_RELEASE=12.0.1
