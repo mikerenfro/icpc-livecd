@@ -69,7 +69,19 @@ Each supported language gets its own `languages/LANGUAGE` folder containing:
 
 ### Modularized IDE support (adding a new IDE to the environment)
 
-TBD
+This is similar to the modularized programming language support above.
+The `ides` folder contains one folder per IDE, containing:
+
+- a functions.sh file containing a function `install_ide`. This file will be sourced by `build.sh`, and `install_ide` will be run.
+- any desktop icon files to be copied to the live system's `/usr/share/applications` folder.
+- any hook scripts needed to be run during the build or boot process. These often modify permissions of IDE folders that are usually installed in the user's home directory.
+
+### Site-specific README for competing teams
+
+It's convenient to provide instructions to the teams in an easily-found README.html on their desktop folder.
+
+The `team-readme-files` folder contains Markdown files for introductory text, an overview of the locally-supported programming languages, and an overview of the locally-installed IDEs.
+These files, the language-specific Markdown files in the `languages/LANGUAGE` folders, and the Markdown snippets contained in the `ides/IDE/functions.sh` files are processed with [Pandoc](https://pandoc.org/) to produce a final `/etc/skel/Desktop/README.html` during the build process.
 
 ## References
 
