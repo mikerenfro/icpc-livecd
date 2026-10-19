@@ -13,7 +13,7 @@ function install_ide() {
         url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
         (cd ${STARTDIR} && ${WGET} ${url})
         mkdir -p ${ECLIPSE_DIR}/${language}
-        tarball=${STARTDIR}/$(basename ${ECLIPSE_URL})
+        tarball=${STARTDIR}/$(basename ${url})
         tar -zxf ${tarball} --strip-components=1 -C ${ECLIPSE_DIR}/${language}
         case ${language} in
             cpp) shortcut="Eclipse-C++";;
