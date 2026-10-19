@@ -1,5 +1,4 @@
 function install_ide() {
-    echo -ne "- Eclipse "
 
     HERE=${STARTDIR}/ides/${IDE}
 
