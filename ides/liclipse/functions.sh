@@ -10,7 +10,7 @@ function install_ide() {
     mkdir -p ${LICLIPSE_DIR}
     tar --strip-components=1 -C ${LICLIPSE_DIR} \
         -zxf ${STARTDIR}/$(basename ${LICLIPSE_URL})
-    cp ${HERE}/shortcuts/LiClipse.desktop ${CHROOT}/usr/share/applications/
+    cp ${HERE}/LiClipse.desktop ${CHROOT}/usr/share/applications/
     echo "LICLIPSE_RELEASE=${LICLIPSE_RELEASE}" >> ${CHROOT}/opt/ide-versions
     echo "- LiClipse __LICLIPSE_VERSION__ (for Python)" >> ${CHROOT}/opt/ides.md
 }
