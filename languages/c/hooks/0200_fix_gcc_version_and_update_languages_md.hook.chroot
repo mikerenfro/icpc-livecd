@@ -1,0 +1,28 @@
+#!/bin/bash
+set -e
+
+function get_debian_package_version() {
+    dpkg-query -W -f='${Version}\n' $1 | egrep -o '^[0-9.]+'
+}
+
+function modify_team_readme() {
+    GCC_VERSION=$(get_debian_package_version gcc-14)
+    # At this point, we should have:
+    # - /opt/ides.md
+    # - /opt/languages.md
+    # - /opt/team-readme-files/*.md
+    # waiting for versions to be replaced.
+    perl -pi -e \
+        "
+        s/__GCC_VERSION__/${GCC_VERSION}/g;
+        " \
+        /opt/languages.md
+}
+
+if [ -f /opt/ide-versions ]; then
+    . /opt/ide-versions
+fi
+
+modify_team_readme
+
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 10
