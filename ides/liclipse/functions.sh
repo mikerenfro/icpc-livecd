@@ -3,8 +3,8 @@ function install_ide() {
 
     HERE=${STARTDIR}/ides/${IDE}
 
-    LICLIPSE_URL=https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
     LICLIPSE_RELEASE=12.0.1
+    LICLIPSE_URL=https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
     (cd ${STARTDIR} && ${WGET} ${LICLIPSE_URL})
     LICLIPSE_DIR=${CHROOT}/opt/liclipse
     mkdir -p ${LICLIPSE_DIR}
