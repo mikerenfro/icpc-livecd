@@ -14,21 +14,22 @@
         </p>
         <h1>Languages Supported</h1>
         <ul>
-            <li>C (using gcc 14.2.0)</li>
-            <li>C++ (using g++ 14.2.0)</li>
-            <li>Java (using OpenJDK 21.0.9)</li>
-            <li>Python 3 (using PyPy 7.3.19 for Python 3.11.11)</li>
+            <li>C (using gcc __GCC_VERSION__)</li>
+            <li>C++ (using g++ __GPP_VERSION__)</li>
+            <li>Java (using OpenJDK __JDK_VERSION__)</li>
+            <li>Python 3 (using PyPy __PYPY_VERSION__)</li>
         </ul>
         <h1>IDEs / Text Editors Provided</h1>
         <p><b>All IDEs and text editors are provided AS IS, with no PRE-CONFIGURATION.
         It is up to you to know how to configure and use your preferred software.</b></p>
         <ul>
-            <li>Eclipse 2025-09 (for C/C++, Java, and Python)</li>
+            <li>Eclipse __ECLIPSE_VERSION__ (for C/C++ and Java)</li>
             <li>emacs</li>
+            <li>LiClipse __LICLIPSE_VERSION__ (for Python)</li>
             <li>nano</li>
-            <li>PyCharm Community Edition 2025.2.3</li>
+            <li>PyCharm Community Edition __PYCHARM_VERSION__</li>
             <li>vim</li>
-            <li>Visual Studio Code</li>
+            <li>Visual Studio Code __VSCODE_VERSION__</li>
         </ul>
         <h1>How to Compile and Run Your Code from the Command Line</h1>
         <p>All compiler and run options below are the same options that
@@ -41,7 +42,7 @@
         <h2>C</h2>
 
         <h3>Compile</h3>
-        <p><code>gcc -g -O2 -std=gnu23 -static -lm -o program program.c</code></p>
+        <p><code>gcc __CFLAGS__ -o program program.c</code></p>
 
         <h3>Build</h3>
         <p><code>./program</code></p>
@@ -49,7 +50,7 @@
         <h2>C++</h2>
 
         <h3>Compile</h3>
-        <p><code>g++ -g -O2 -std=gnu++23 -static -lrt -Wl,--whole-archive -lpthread -Wl,--no-whole-archive -o program program.cpp</code></p>
+        <p><code>g++ __CXXFLAGS__ -o program program.cpp</code></p>
 
         <h3>Build</h3>
         <p><code>./program</code></p>
@@ -57,11 +58,11 @@
         <h2>Java</h2>
 
         <h3>Compile</h3>
-        <p><code>javac -encoding UTF-8 -sourcepath . -cp ./*.class -d . program.java</code></p>
+        <p><code>javac __JAVACFLAGS__ program.java</code></p>
 
         <h3>Build</h3>
-        <p><code>java -Dfile.encoding=UTF-8 -XX:+UseSerialGC -Xss64m -Xms{memlim}m -Xmx{memlim}m -cp .:./*.class program</code>
-        where <code>{memlim}</code> is the designated memory limit for the particular problem.</p>
+        <p><code>java __JAVAFLAGS__ program</code>
+        where <code>memlim</code> is the designated memory limit for the particular problem.</p>
 
         <h2>Python 3</h2>
 

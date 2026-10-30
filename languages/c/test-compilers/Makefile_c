@@ -1,0 +1,18 @@
+CC=gcc
+CFLAGS=-g -O2 -std=gnu23 -static -lm
+
+%: %.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+all: hw_icpc leggjasaman
+	@echo "# Hello, World in C"
+	./hw_icpc
+	@echo "# Testing Leggjasaman C against input 1"
+	./leggjasaman < 1.in | tee 1-test.ans
+	@diff -u 1.ans 1-test.ans && echo ✅ passed || echo ❌ failed
+	@echo "# Testing Leggjasaman C against input 2"
+	./leggjasaman < 2.in | tee 2-test.ans
+	@diff -u 2.ans 2-test.ans && echo ✅ passed || echo ❌ failed
+
+clean:
+	rm -f hw_icpc leggjasaman

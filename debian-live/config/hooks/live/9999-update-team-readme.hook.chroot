@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+
+pandoc --toc --number-sections -s \
+    /opt/team-readme-files/{01_intro,02_languages_heading}.md \
+    /opt/languages.md \
+    /opt/team-readme-files/03_ides_heading.md \
+    /opt/ides.md \
+    -o /etc/skel/Desktop/README.html

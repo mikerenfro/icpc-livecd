@@ -5,7 +5,7 @@ catch_error() {
     local exit_code=$?
     local line_number=$1
     echo "Error occurred on line $line_number with exit code $exit_code" >&2
-    
+
     # Perform cleanup actions here (e.g., removing temp files)
     cd ${STARTDIR}
     exit "$exit_code"
@@ -13,63 +13,9 @@ catch_error() {
 
 trap 'catch_error $LINENO' ERR INT
 
-function install_eclipse() {
-    echo -ne "- Eclipse "
-    (cd ${STARTDIR}
-    for language in ${ECLIPSE_LANGUAGES}; do
-        url=https://${ECLIPSE_MIRROR}/eclipse/technology/epp/downloads/release/${ECLIPSE_RELEASE}/R/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
-        ${WGET} --progress=dot:giga --no-clobber ${url}
-    done)
-
-    ECLIPSE_DIR=${CHROOT}/opt/eclipse
-    for language in ${ECLIPSE_LANGUAGES}; do
-        echo -ne "(for ${language}) "
-        mkdir -p ${ECLIPSE_DIR}/${language}
-        tarball=${STARTDIR}/eclipse-${language}-${ECLIPSE_RELEASE}-R-linux-gtk-x86_64.tar.gz
-        tar -zxf ${tarball} --strip-components=1 -C ${ECLIPSE_DIR}/${language}
-        case ${language} in
-            cpp) shortcut="Eclipse-C++";;
-            java) shortcut="Eclipse-Java";;
-        esac
-        cp ${STARTDIR}/applications/${shortcut}.desktop ${CHROOT}/usr/share/applications/
-    done
-    echo ""
-}
-
-function install_liclipse() {
-    echo "- Liclipse"
-    (cd ${STARTDIR} && ${WGET} ${LICLIPSE_URL})
-    LICLIPSE_DIR=${CHROOT}/opt/liclipse
-    mkdir -p ${LICLIPSE_DIR}
-    tar --strip-components=1 -C ${LICLIPSE_DIR} \
-        -zxf ${STARTDIR}/$(basename ${LICLIPSE_URL})
-    cp ${STARTDIR}/applications/LiClipse.desktop ${CHROOT}/usr/share/applications/
-}
-
-function install_pycharm() {
-    echo "- Pycharm"
-    (cd ${STARTDIR} && ${WGET} ${PYCHARM_URL})
-    PYCHARM_DIR=${CHROOT}/opt/pycharm
-    mkdir -p ${PYCHARM_DIR}
-    tar --strip-components=1 -C ${PYCHARM_DIR} \
-        -zxf ${STARTDIR}/$(basename ${PYCHARM_URL})
-    cp ${STARTDIR}/applications/PyCharm.desktop ${CHROOT}/usr/share/applications/
-}
-
-function install_vscode() {
-    echo "- VS Code"
-    (cd ${STARTDIR}
-    wget -q --mirror --no-directories https://packages.microsoft.com/keys/microsoft-2025.asc
-    )
-    TRUSTED_GPG_DIR=${CHROOT}/etc/apt/trusted.gpg.d
-    mkdir -p ${TRUSTED_GPG_DIR}
-    gpg --dearmor < ${STARTDIR}/microsoft-2025.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
-    cp ${STARTDIR}/applications/VS-Code.desktop ${CHROOT}/usr/share/applications/
-}
-
 function allow_internet() {
     # No-op for now
-    echo "Ensuring Internet access stays enabled"    
+    echo "Ensuring Internet access stays enabled"
 }
 
 function forbid_internet() {
@@ -82,19 +28,45 @@ function forbid_internet() {
     cp ${STARTDIR}/internet-restrictions/restrict-internet.list.chroot ${WORKDIR}/config/package-lists/
 }
 
-STARTDIR=${PWD}
+function install_supported_languages() {
+    echo -ne "Adding language support: "
+    cp ${STARTDIR}/languages/*.{ans,in} ${STARTDIR}/languages/Makefile ${CHROOT}/etc/skel/Desktop/test-compilers/
+    > ${CHROOT}/opt/languages.md
+    for LANGUAGE in ${LANGUAGES}; do
+        echo -ne "${LANGUAGE} "
+        cp ${STARTDIR}/languages/${LANGUAGE}/${LANGUAGE}.list.chroot ${WORKDIR}/config/package-lists/
+        cp ${STARTDIR}/languages/${LANGUAGE}/hooks/* ${WORKDIR}/config/hooks/live/
+        cp ${STARTDIR}/languages/${LANGUAGE}/test-compilers/* ${CHROOT}/etc/skel/Desktop/test-compilers/
+        ${STARTDIR}/languages/${LANGUAGE}/${LANGUAGE}_filter_md.sh < ${STARTDIR}/languages/${LANGUAGE}/${LANGUAGE}.md >> ${CHROOT}/opt/languages.md
+    done
+    echo "done."
+}
+
+function install_supported_ides() {
+    echo "Installing optional IDEs (if any): "
+    > ${CHROOT}/opt/ide-versions
+    > ${CHROOT}/opt/ides.md
+    for IDE in ${IDES}; do
+        if [ -f ${STARTDIR}/ides/${IDE}/functions.sh ]; then
+            . ${STARTDIR}/ides/${IDE}/functions.sh
+            install_ide
+        else
+            echo "Can't find ${STARTDIR}/ides/${IDE}/functions.sh"
+            exit 1
+        fi
+    done
+    echo "done."
+}
+
 WORKDIR=~/icpc
-ECLIPSE_RELEASE=2026-09
-ECLIPSE_LANGUAGES="cpp java"
-ECLIPSE_MIRROR=mirror.umd.edu
-LICLIPSE_RELEASE=12.0.1
-PYCHARM_RELEASE=2026.2.3
 SQUID_IP=149.149.254.4
+LANGUAGES="c c++ java python"
+IDES="eclipse liclipse pycharm vscode"
 
 # Hopefully nothing to change below this line
+STARTDIR=${PWD}
 WGET="wget --no-clobber -q"
-PYCHARM_URL=https://download.jetbrains.com/python/pycharm-${PYCHARM_RELEASE}.tar.gz
-LICLIPSE_URL=https://www.mediafire.com/file_premium/cj9sxqllqjivuya/liclipse_${LICLIPSE_RELEASE}_linux.gtk.x86_64.tar.gz
+DEBIAN_RELEASE=trixie
 
 CHROOT=${WORKDIR}/config/includes.chroot
 
@@ -115,9 +87,12 @@ fi
 
 # Preparations
 echo "Cleaning out and recreating ${WORKDIR}"
-sudo rm -rf ${WORKDIR} && mkdir -p ${WORKDIR} && pushd ${WORKDIR}
+sudo rm -rf ${WORKDIR} && mkdir -p ${WORKDIR}
+
+pushd ${WORKDIR}
+
 lb config \
-    --distribution trixie \
+    --distribution ${DEBIAN_RELEASE} \
     --apt-recommends false \
     --bootappend-live "boot=live components quiet splash noroot toram nouveau.modeset=0" \
     --bootappend-live-failsafe "boot=live components memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=788 noroot toram"
@@ -130,12 +105,12 @@ else
     forbid_internet
 fi
 
-echo -ne "Installing optional IDEs (if any): "
-install_eclipse
-install_liclipse
-install_pycharm
-install_vscode
-echo "done."
+install_supported_languages
+install_supported_ides
+
+echo "Copying README markdown content"
+cp -a ${STARTDIR}/team-readme-files ${CHROOT}/opt/
+
 echo "$(date): building live CD"
 sudo lb build >> ~/icpc-build.out 2>&1
 echo "$(date): done"

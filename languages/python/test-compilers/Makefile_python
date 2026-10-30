@@ -1,0 +1,14 @@
+PY3=pypy3
+
+all:
+	@echo "Hello, World in Python 3"
+	$(PY3) hw_icpc.py
+	@echo "# Testing Leggjasaman Python against input 1"
+	$(PY3) leggjasaman.py < 1.in | tee 1-test.ans
+	@diff -u 1.ans 1-test.ans && echo ✅ passed || echo ❌ failed
+	@echo "# Testing Leggjasaman Python against input 2"
+	$(PY3) leggjasaman.py < 2.in | tee 2-test.ans
+	@diff -u 2.ans 2-test.ans && echo ✅ passed || echo ❌ failed
+
+clean:
+	@echo "Nothing to clean from a Python Makefile, so doing nothing"
