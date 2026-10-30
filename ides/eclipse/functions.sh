@@ -20,7 +20,7 @@ function install_ide() {
             java) shortcut="Eclipse-Java";;
         esac
         cp ${HERE}/${shortcut}.desktop ${CHROOT}/usr/share/applications/
-        cp ${HERE}/*.hook.chroot ${CHROOT}/lib/live/config/
+        cp ${HERE}/hooks/*.hook.chroot ${WORKDIR}/config/hooks/live/
     done
     echo ""
     echo "ECLIPSE_RELEASE=${ECLIPSE_RELEASE}" >> ${CHROOT}/opt/ide-versions

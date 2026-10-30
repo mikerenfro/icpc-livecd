@@ -8,6 +8,6 @@ function install_ide() {
     mkdir -p ${TRUSTED_GPG_DIR}
     gpg --dearmor < ${STARTDIR}/microsoft-2025.asc > ${TRUSTED_GPG_DIR}/packages.microsoft.gpg
     cp ${HERE}/VS-Code.desktop ${CHROOT}/usr/share/applications
-    cp ${HERE}/*.hook.chroot ${WORKDIR}/config/hooks/live/
+    cp ${HERE}/hooks/*.hook.chroot ${WORKDIR}/config/hooks/live/
     echo "- Visual Studio Code __VSCODE_VERSION__" >> ${CHROOT}/opt/ides.md
 }

@@ -12,7 +12,7 @@ function install_ide() {
     tar --strip-components=1 -C ${PYCHARM_DIR} \
         -zxf ${STARTDIR}/$(basename ${PYCHARM_URL})
     cp ${HERE}/PyCharm.desktop ${CHROOT}/usr/share/applications/
-    cp ${HERE}/*.hook.chroot ${CHROOT}/lib/live/config/
+    cp ${HERE}/hooks/*.hook.chroot ${WORKDIR}/config/hooks/live/
     echo "PYCHARM_RELEASE=${PYCHARM_RELEASE}" >> ${CHROOT}/opt/ide-versions
     echo "- PyCharm Community Edition __PYCHARM_VERSION__" >> ${CHROOT}/opt/ides.md
 }

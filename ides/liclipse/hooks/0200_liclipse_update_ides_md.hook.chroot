@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+function modify_team_readme() {
+    # At this point, we should have:
+    # - /opt/ides.md
+    # - /opt/languages.md
+    # - /opt/team-readme-files/*.md
+    # waiting for versions to be replaced.
+    perl -pi -e \
+        "
+        s/__LICLIPSE_RELEASE__/${LICLIPSE_RELEASE}/g;
+        " \
+        /opt/ides.md
+}
+
+if [ -f /opt/ide-versions ]; then
+    . /opt/ide-versions
+fi
+
+modify_team_readme
