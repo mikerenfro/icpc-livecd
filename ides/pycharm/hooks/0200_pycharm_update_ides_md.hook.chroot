@@ -9,7 +9,7 @@ function modify_team_readme() {
     # waiting for versions to be replaced.
     perl -pi -e \
         "
-        s/__PYCHARM_RELEASE__/${PYCHARM_RELEASE}/g;
+        s/__PYCHARM_VERSION__/${PYCHARM_RELEASE}/g;
         " \
         /opt/ides.md
 }

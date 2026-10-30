@@ -9,7 +9,7 @@ function modify_team_readme() {
     # waiting for versions to be replaced.
     perl -pi -e \
         "
-        s/__ECLIPSE_RELEASE__/${ECLIPSE_RELEASE}/g;
+        s/__ECLIPSE_VERSION__/${ECLIPSE_RELEASE}/g;
         " \
         /opt/ides.md
 }

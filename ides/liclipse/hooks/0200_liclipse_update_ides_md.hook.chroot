@@ -9,7 +9,7 @@ function modify_team_readme() {
     # waiting for versions to be replaced.
     perl -pi -e \
         "
-        s/__LICLIPSE_RELEASE__/${LICLIPSE_RELEASE}/g;
+        s/__LICLIPSE_VERSION__/${LICLIPSE_RELEASE}/g;
         " \
         /opt/ides.md
 }
