@@ -96,7 +96,8 @@ lb config \
     --distribution ${DEBIAN_RELEASE} \
     --apt-recommends false \
     --bootappend-live "boot=live components quiet splash noroot toram nouveau.modeset=0" \
-    --bootappend-live-failsafe "boot=live components memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=788 noroot toram"
+    --bootappend-live-failsafe "boot=live components memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=788 noroot toram" \
+    --archive-areas "main,non-free-firmware"
 
 echo "Syncing debian-live/config contents"
 rsync -a ${TEAM_IMAGE_DIR}/debian-live/config/ config/
