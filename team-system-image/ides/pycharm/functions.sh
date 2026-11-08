@@ -1,6 +1,6 @@
 function install_ide() {
 
-    HERE=${STARTDIR}/ides/${IDE}
+    HERE=${TEAM_IMAGE_DIR}/ides/${IDE}
 
     echo "- Pycharm"
     PYCHARM_RELEASE=2026.2.3

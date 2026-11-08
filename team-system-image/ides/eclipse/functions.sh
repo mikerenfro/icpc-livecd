@@ -1,7 +1,7 @@
 function install_ide() {
     echo -ne "- Eclipse "
 
-    HERE=${STARTDIR}/ides/${IDE}
+    HERE=${TEAM_IMAGE_DIR}/ides/${IDE}
 
     ECLIPSE_RELEASE=2026-09
     ECLIPSE_LANGUAGES="cpp java"
