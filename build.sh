@@ -31,6 +31,7 @@ function forbid_internet() {
 function install_supported_languages() {
     echo -ne "Adding language support: "
     cp ${TEAM_IMAGE_DIR}/languages/*.{ans,in} ${TEAM_IMAGE_DIR}/languages/Makefile ${CHROOT}/etc/skel/Desktop/test-compilers/
+    mkdir -p ${CHROOT}/opt
     > ${CHROOT}/opt/languages.md
     for LANGUAGE in ${LANGUAGES}; do
         echo -ne "${LANGUAGE} "
@@ -44,6 +45,7 @@ function install_supported_languages() {
 
 function install_supported_ides() {
     echo "Installing optional IDEs (if any): "
+    mkdir -p ${CHROOT}/opt
     > ${CHROOT}/opt/ide-versions
     > ${CHROOT}/opt/ides.md
     for IDE in ${IDES}; do
@@ -111,6 +113,7 @@ install_supported_languages
 install_supported_ides
 
 echo "Copying README markdown content"
+mkdir -p ${CHROOT}/opt
 cp -a ${TEAM_IMAGE_DIR}/team-readme-files ${CHROOT}/opt/
 
 echo "$(date): building live CD"
